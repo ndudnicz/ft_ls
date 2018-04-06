@@ -10,8 +10,8 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MY_LIMITS_H
-# define MY_LIMITS_H
+#ifndef MYLIMITS_H
+# define MYLIMITS_H
 
 # define CHARMAX 127
 # define CHARMIN -128
