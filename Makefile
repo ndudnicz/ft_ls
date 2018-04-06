@@ -14,7 +14,8 @@ LIB_INCLUDES = libft/includes/
 SRC =	\
 main.c \
 error.c \
-options.c
+options.c \
+entry_list.c
 
 OBJ = $(SRC:%.c=obj/%.o)
 

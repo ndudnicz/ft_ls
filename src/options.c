@@ -9,7 +9,11 @@
 ** and doesn't exist anymore in argv.
 */
 
-static void	del_null_params(int *ac, char **av, int offset)
+static void	del_null_params(
+	int *ac,
+	char **av,
+	int offset
+)
 {
 	int		i;
 	int		n;
@@ -56,10 +60,8 @@ static int		switch_set_options(
 				ctx->options |= OPT_DOT_FILES;
 			else if (*arg == OPT_DOT_REVERSE_CHAR)
 				ctx->options |= OPT_DOT_REVERSE;
-			else if (*arg == OPT_SORT_TIME_CHAR)
-				ctx->options |= OPT_SORT_TIME;
 			else
-				return (ft_error(exec_name, "", UNKNOW_ARG, -1));
+				ctx->options |= OPT_SORT_TIME;
 		}
 		else
 			return (ft_error(exec_name, "", UNKNOW_ARG, -1));
@@ -72,7 +74,11 @@ static int		switch_set_options(
 ** Parse argv and set argv[i] at NULL if an options was found.
 */
 
-int	get_options(t_context *ctx, int *ac, char **av)
+int	get_options(
+	t_context *ctx,
+	int *ac,
+	char **av
+)
 {
 	int		i;
 	int		n;
@@ -94,7 +100,10 @@ int	get_options(t_context *ctx, int *ac, char **av)
 ** return 0 if ok, 1 and display an error msg if not ok
 */
 
-int	valid_options(char const *exec_name, t_context *ctx)
+int	valid_options(
+	char const *exec_name,
+	t_context *ctx
+)
 {
 	return (0);
 	// if (options->st_key.key_size == KEY_LENGTH && (options->options & OPT_FILE)) {
