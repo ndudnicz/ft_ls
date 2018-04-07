@@ -10,14 +10,24 @@
 static t_entry		*init_entry(
 	t_entry *new,
 	t_u64 const length,
-	struct stat *s,
-	struct dirent *dir
+	struct stat *s
 )
 {
 	new->length = length + 1;
-	new->mode |= S_ISDIR(*s) ? MODE_IS_NODE : 0;
+	new->mode |= S_ISDIR(s->st_mode) ? MODE_IS_NODE : 0;
 	ft_memcpy((void*)&new->stat, (void*)s, sizeof(struct stat));
-	if (!(new->name = ft_strdup(dir->d_name)))
+	return (new);
+}
+
+static t_entry		*set_names(
+	t_entry *new,
+	char const *name,
+	char const *fullname
+)
+{
+	// printf("%s\n",name);//
+	if (!new || !name || !fullname || !(new->name = ft_strdup(name)) ||
+	!(new->fullname = ft_strdup(fullname)))
 		return (NULL);
 	else
 		return (new);
@@ -39,16 +49,20 @@ static t_entry		*new_entry(void)
 t_entry				*create_entry(
 	t_u64 const length,
 	struct stat *s,
-	struct dirent *dir
+	struct dirent *dir,
+	char const *fullname
 )
 {
 	t_entry		*new;
 
-	if (!(new = new_entry()) || !init_entry(new, length, s, dir))
-	{
-		ft_error("Error", "init_entry()", MALLOC_FAILED, 0);
-		return (NULL);
-	}
+	new = NULL;
+	if (
+		!fullname || !dir || !dir->d_name || !s ||
+		!(new = new_entry()) ||
+		!init_entry(new, length, s) ||
+		!set_names(new, dir->d_name, fullname)
+	)
+		return (pft_error("Error", "create_entry()", MALLOC_FAILED, NULL));
 	else
 		return (new);
 }
@@ -61,12 +75,14 @@ t_entry		*push_back_entry(
 	t_entry **new
 )
 {
+	if (*new == NULL)
+		return (NULL);
 	if (*begin == NULL)
 	{
 		*begin = *new;
-		(*new)->last = *new;
+		(*begin)->last = *new;
 	}
-	(*begin)->last->next = *new;
 	(*begin)->last = *new;
+	(*begin)->last->next = *new;
 	return (*begin);
 }

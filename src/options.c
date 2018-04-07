@@ -101,8 +101,8 @@ int	get_options(
 */
 
 int	valid_options(
-	char const *exec_name,
-	t_context *ctx
+	// char const *exec_name,
+	// t_context *ctx
 )
 {
 	return (0);

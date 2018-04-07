@@ -17,6 +17,7 @@
 
 typedef struct		s_context
 {
+	char			*exec_name;
 	unsigned char	options;
 }					t_context;
 

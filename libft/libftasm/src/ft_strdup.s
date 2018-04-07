@@ -22,4 +22,5 @@ _ft_strdup:
 	ret
 
 fail:
+	xor rax, rax
 	ret
