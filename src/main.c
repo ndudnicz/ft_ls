@@ -16,6 +16,7 @@ int		main(int ac, char **av)
 	if (get_options(&ctx, &ac, av))
 		return (EXIT_FAILURE);
 	ctx.exec_name = av[0];
-	make_node_entry(&ctx, &begin, av[1]);
+	char *s = strdup(".");
+	make_node_entry(&ctx, &begin, ac > 1 && av[1] ? av[1] : ".");
 	return (0);
 }

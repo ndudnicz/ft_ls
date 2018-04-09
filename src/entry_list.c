@@ -7,6 +7,18 @@
 /*
 ** Init the new entry
 */
+// char *
+// ftstrdup(const char *str)
+// {
+// 	size_t len;
+// 	char *copy;
+//
+// 	len = strlen(str) + 1;
+// 	if ((copy = malloc(len)) == NULL)
+// 		return (NULL);
+// 	memcpy(copy, str, len);
+// 	return (copy);
+// }
 static t_entry		*init_entry(
 	t_entry *new,
 	t_u64 const length,
@@ -25,7 +37,7 @@ static t_entry		*set_names(
 	char const *fullname
 )
 {
-	// printf("%s\n",name);//
+	printf("%s\n",name);//
 	if (!new || !name || !fullname || !(new->name = ft_strdup(name)) ||
 	!(new->fullname = ft_strdup(fullname)))
 		return (NULL);

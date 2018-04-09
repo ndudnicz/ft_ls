@@ -2,7 +2,7 @@ NAME = ft_ls
 
 CC = gcc
 
-FLAGS = -g -Wextra -Wall -fsanitize=address #-Werror
+FLAGS = -g -O3 -Wextra -Wall -fsanitize=address #-Werror
 
 PATH_SRC = src
 

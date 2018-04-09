@@ -41,15 +41,15 @@ t_entry		*make_node_entry(
 
 		if (!begin || !dp || !newpath)
 			return (pft_error(ctx->exec_name, "", UNKNOWN_ERROR, NULL));
-		new = create_entry((*begin) ? (*begin)->length : 0, &s, dp, NULL);
+		new = create_entry((*begin) ? (*begin)->length : 0, &s, dp, newpath);
 
 
-		// if (push_back_entry(begin, &new) == NULL)
-		// 	return (pft_error(ctx->exec_name, "", UNKNOWN_ERROR, NULL));
-		// if ((ctx->options & OPT_RECURSIVE) && ft_strcmp(CUR_DIR_STR, new->name)
-		// && ft_strcmp(PARENT_DIR_STR, new->name) && (new->mode & MODE_IS_NODE))
-		// 	make_node_entry(ctx, &new, newpath);
-		// free((void*)newpath);
+		if (push_back_entry(begin, &new) == NULL)
+			return (pft_error(ctx->exec_name, "", UNKNOWN_ERROR, NULL));
+		if ((ctx->options & OPT_RECURSIVE) && ft_strcmp(CUR_DIR_STR, new->name)
+		&& ft_strcmp(PARENT_DIR_STR, new->name) && (new->mode & MODE_IS_NODE))
+			make_node_entry(ctx, &new, newpath);
+		free((void*)newpath);
 	}
 	(void)closedir(dirp);
 	return (*begin);

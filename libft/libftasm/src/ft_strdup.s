@@ -6,7 +6,9 @@ global _ft_strdup
 section .text
 
 _ft_strdup:
-	mov rbx, rdi
+	cmp rdi, 0
+	je fail
+	; mov rbx, rdi
 	call _ft_strlen
 	mov rdx, rax
 	inc rax
@@ -16,7 +18,8 @@ _ft_strdup:
 	cmp rax, 0
 	je fail
 	mov rdi, rax
-	mov rsi, rbx
+	; mov rsi, rbx
+	mov rsi, rdi
 	pop rdx
 	call _ft_memcpy
 	ret
