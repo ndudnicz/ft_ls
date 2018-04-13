@@ -19,6 +19,6 @@ int		main(int ac, char **av)
 	ctx.exec_name = av[0];
 	make_node_entry(&ctx, &begin, ac > 1 && av[1] ? av[1] : ".");
 
-	display_entries(begin);
+	display_entries_debug(&begin);
 	return (0);
 }

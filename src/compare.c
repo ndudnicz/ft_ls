@@ -4,5 +4,5 @@
 
 t_s32	compare_alpha(t_entry* a, t_entry *b)
 {
-	return (ft_strcmp(a->name, b->name));
+	return (ft_strcmp(b->name, a->name));
 }

@@ -3,24 +3,31 @@
 #include "entry.h"
 #include "mystdint.h"
 
-static void	insert_between(
+
+#include <stdio.h>//
+static t_entry	*insert_between(
 	t_entry **prev,
 	t_entry **new,
 	t_entry **next
 )
 {
+	// puts((*new)->name);
 	if (*prev)
 	{
+		// puts("prev");
 		(*prev)->next = *new;
 		(*new)->prev = *prev;
 	}
 	if (*next)
 	{
+		// puts("next");
 		(*new)->next = *next;
 		(*next)->prev = *new;
 	}
+	return (*new);
+	// puts("----------");
 }
-
+#include "display.h"//
 t_entry		*push_sort_entry(
 	t_entry **begin,
 	t_entry **new,
@@ -28,6 +35,7 @@ t_entry		*push_sort_entry(
 )
 {
 	t_entry		*tmp;
+	int			cmp;
 
 	tmp = *begin;
 	if (*new == NULL)
@@ -45,12 +53,16 @@ t_entry		*push_sort_entry(
 	{
 		while (tmp)
 		{
-			if (compare(*new, tmp) < 0)
+			cmp = compare(*new, tmp);
+
+			if (cmp <= 0)
 			{
-				insert_between(&tmp->prev, new, &tmp);
-				return (*begin);
+				return (insert_between(&tmp->prev, new, &tmp));
 			}
-			tmp = tmp->next;
+			else
+			{
+				tmp = tmp->next;
+			}
 		}
 		push_back_entry(begin, new);
 	}
