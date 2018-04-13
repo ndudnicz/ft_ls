@@ -2,23 +2,13 @@
 
 #include "entry.h"
 #include "libftasm.h"
+#include "libft.h"
 #include "error.h"
 
 /*
 ** Init the new entry
 */
-// char *
-// ftstrdup(const char *str)
-// {
-// 	size_t len;
-// 	char *copy;
-//
-// 	len = strlen(str) + 1;
-// 	if ((copy = malloc(len)) == NULL)
-// 		return (NULL);
-// 	memcpy(copy, str, len);
-// 	return (copy);
-// }
+
 static t_entry		*init_entry(
 	t_entry *new,
 	t_u64 const length,
@@ -33,16 +23,18 @@ static t_entry		*init_entry(
 
 static t_entry		*set_names(
 	t_entry *new,
-	char const *name,
-	char const *fullname
+	char const * const name,
+	char const * const fullname
 )
 {
-	printf("%s\n",name);//
 	if (!new || !name || !fullname || !(new->name = ft_strdup(name)) ||
 	!(new->fullname = ft_strdup(fullname)))
 		return (NULL);
-	else
+	else{
+		// puts(new->fullname);
 		return (new);
+
+	}
 }
 
 /*
@@ -77,24 +69,4 @@ t_entry				*create_entry(
 		return (pft_error("Error", "create_entry()", MALLOC_FAILED, NULL));
 	else
 		return (new);
-}
-
-/*
-** Push back the new entry at the end of the entry list
-*/
-t_entry		*push_back_entry(
-	t_entry **begin,
-	t_entry **new
-)
-{
-	if (*new == NULL)
-		return (NULL);
-	if (*begin == NULL)
-	{
-		*begin = *new;
-		(*begin)->last = *new;
-	}
-	(*begin)->last = *new;
-	(*begin)->last->next = *new;
-	return (*begin);
 }

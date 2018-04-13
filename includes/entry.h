@@ -26,20 +26,39 @@ typedef struct		s_entry
 }					t_entry;
 
 /*
+** entry_push_sort.c
+*/
+t_entry		*push_sort_entry(
+	t_entry **begin,
+	t_entry **new,
+	t_s32	(*compare)(t_entry*, t_entry*)
+);
+
+/*
+** entry_push_back.c
+*/
+t_entry		*push_back_entry(
+	t_entry **begin,
+	t_entry **new
+);
+
+/*
 ** entry_list.c
 */
 t_entry		*create_entry(
 	t_u64 const length,
 	struct stat *s,
 	struct dirent *dir,
-	char const *fullname
+	char const * const fullname
 );
-t_entry		*push_back_entry(t_entry **begin, t_entry **new);
 
 /*
 ** entry_parse.c
 */
-t_entry		*make_node_entry(t_context const *ctx,
-								t_entry **begin, char const * const path);
+t_entry		*make_node_entry(
+	t_context const *ctx,
+	t_entry **begin,
+	char const * const path
+);
 
 #endif

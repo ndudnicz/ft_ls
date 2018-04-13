@@ -4,6 +4,7 @@
 #include "libftasm.h"
 #include "libft.h"
 #include "error.h"
+#include "compare.h"
 
 static void	*ft_free(void *ptr)
 {
@@ -28,11 +29,11 @@ t_entry		*make_node_entry(
 
 	ft_memset(&newpath, 0,
 	sizeof(DIR*) + sizeof(t_entry*) + sizeof(struct dirent*) + sizeof(char*));
-	printf("%p\n%p\n%p\n%p\n", &dirp, &new, &dp, &newpath);
+	// printf("%p\n%p\n%p\n%p\n", &dirp, &new, &dp, &newpath);//
 	if (!(dirp = opendir(path)))
 		return (pft_perror(ctx->exec_name, path, NULL));
 	while ((dp = readdir(dirp)) != NULL) {
-		if (!dp || !dp->d_name)
+		if (!dp/* || !dp->d_name*/)
 			return (NULL);
 		if (!(newpath = ft_strjoin_free(ft_strjoin(path, "/"), dp->d_name, 1, 0)))
 			return (pft_error(ctx->exec_name, "", MALLOC_FAILED, NULL));
@@ -42,10 +43,12 @@ t_entry		*make_node_entry(
 		if (!begin || !dp || !newpath)
 			return (pft_error(ctx->exec_name, "", UNKNOWN_ERROR, NULL));
 		new = create_entry((*begin) ? (*begin)->length : 0, &s, dp, newpath);
+		// ft_putendl(new->name);
 
-
-		if (push_back_entry(begin, &new) == NULL)
+		if (push_sort_entry(begin, &new, &compare_alpha) == NULL)
 			return (pft_error(ctx->exec_name, "", UNKNOWN_ERROR, NULL));
+		// if (push_back_entry(begin, &new) == NULL)
+			// return (pft_error(ctx->exec_name, "", UNKNOWN_ERROR, NULL));
 		if ((ctx->options & OPT_RECURSIVE) && ft_strcmp(CUR_DIR_STR, new->name)
 		&& ft_strcmp(PARENT_DIR_STR, new->name) && (new->mode & MODE_IS_NODE))
 			make_node_entry(ctx, &new, newpath);

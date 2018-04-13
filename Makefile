@@ -2,7 +2,7 @@ NAME = ft_ls
 
 CC = gcc
 
-FLAGS = -g -O3 -Wextra -Wall -fsanitize=address #-Werror
+FLAGS = -Wextra -Wall -fsanitize=address -g -O3 #-Werror
 
 PATH_SRC = src
 
@@ -16,7 +16,11 @@ main.c \
 error.c \
 options.c \
 entry_list.c \
-entry_parse.c
+entry_parse.c \
+entry_push_back.c \
+entry_push_sort.c \
+compare.c \
+display.c
 
 OBJ = $(SRC:%.c=obj/%.o)
 
