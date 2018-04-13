@@ -58,7 +58,8 @@ t_entry		*create_entry(
 t_entry		*make_node_entry(
 	t_context const *ctx,
 	t_entry **begin,
-	char const * const path
+	char const * const path,
+	char rec
 );
 
 #endif

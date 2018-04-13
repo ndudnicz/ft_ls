@@ -17,7 +17,10 @@ void	display_entries_debug(t_entry **begin)
 
 	while (tmp)
 	{
-		ft_putendl(tmp->name);
-		tmp = tmp->prev;
+		// ft_putendl(tmp->name);
+		printf("%d: %s \n", tmp->mode & MODE_IS_NODE, tmp->name);
+		// if (tmp->mode & MODE_IS_NODE && tmp->node)
+			// display_entries_debug(&tmp->node);
+		tmp = tmp->next;
 	}
 }

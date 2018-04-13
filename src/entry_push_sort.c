@@ -6,26 +6,27 @@
 
 #include <stdio.h>//
 static t_entry	*insert_between(
+	t_entry **begin,
 	t_entry **prev,
 	t_entry **new,
 	t_entry **next
 )
 {
-	// puts((*new)->name);
 	if (*prev)
 	{
-		// puts("prev");
 		(*prev)->next = *new;
 		(*new)->prev = *prev;
 	}
+	else
+	{
+		*begin = *new;
+	}
 	if (*next)
 	{
-		// puts("next");
 		(*new)->next = *next;
 		(*next)->prev = *new;
 	}
 	return (*new);
-	// puts("----------");
 }
 #include "display.h"//
 t_entry		*push_sort_entry(
@@ -39,25 +40,25 @@ t_entry		*push_sort_entry(
 
 	tmp = *begin;
 	if (*new == NULL)
+	{
 		return (NULL);
+	}
 	else if (*begin == NULL)
 	{
-		*begin = *new;
+			*begin = *new;
+			(*new)->last = *new;
+		return (*new);
 	}
-	// else if (compare(*new, *begin) < 0)
-	// {
-	// 	(*new)->next = *begin;
-	// 	*begin = *new;
-	// }
 	else
 	{
 		while (tmp)
 		{
 			cmp = compare(*new, tmp);
 
-			if (cmp <= 0)
+			if (cmp < 0)
 			{
-				return (insert_between(&tmp->prev, new, &tmp));
+				insert_between(begin, &tmp->prev, new, &tmp);
+				return (*new);
 			}
 			else
 			{

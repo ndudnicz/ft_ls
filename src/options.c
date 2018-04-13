@@ -58,8 +58,8 @@ static int		switch_set_options(
 				ctx->options |= OPT_RECURSIVE;
 			else if (*arg == OPT_DOT_FILES_CHAR)
 				ctx->options |= OPT_DOT_FILES;
-			else if (*arg == OPT_DOT_REVERSE_CHAR)
-				ctx->options |= OPT_DOT_REVERSE;
+			else if (*arg == OPT_REVERSE_CHAR)
+				ctx->options |= OPT_REVERSE;
 			else
 				ctx->options |= OPT_SORT_TIME;
 		}
