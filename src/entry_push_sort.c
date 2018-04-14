@@ -12,6 +12,7 @@ static t_entry	*insert_between(
 	t_entry **next
 )
 {
+	// printf("%s %s %s\n", *prev ? (*prev)->name : "null", (*new)->name, (*next)->name);//
 	if (*prev)
 	{
 		(*prev)->next = *new;
@@ -26,6 +27,7 @@ static t_entry	*insert_between(
 		(*new)->next = *next;
 		(*next)->prev = *new;
 	}
+
 	return (*new);
 }
 #include "display.h"//
@@ -57,8 +59,7 @@ t_entry		*push_sort_entry(
 
 			if (cmp < 0)
 			{
-				insert_between(begin, &tmp->prev, new, &tmp);
-				return (*new);
+				return (insert_between(begin, &tmp->prev, new, &tmp));
 			}
 			else
 			{

@@ -10,6 +10,7 @@ t_entry		*push_back_entry(
 	t_entry **new
 )
 {
+	// printf("push_back: %s\n\n", (*new)->name); //
 	if (*new == NULL)
 		return (NULL);
 	if (*begin == NULL)
@@ -18,6 +19,7 @@ t_entry		*push_back_entry(
 	}
 	if ((*begin)->last)
 	{
+		(*new)->prev = (*begin)->last;
 		(*begin)->last->next = *new;
 	}
 	(*begin)->last = *new;

@@ -20,7 +20,7 @@ t_entry		*make_node_entry(
 	t_context const *ctx,
 	t_entry **begin,
 	char const * const path,
-	char rec
+	char make_node
 )
 {
 	struct stat 	s;
@@ -38,6 +38,11 @@ t_entry		*make_node_entry(
 	while ((dp = readdir(dirp)) != NULL) {
 		if (!dp)
 			return (NULL);
+		if (!(ctx->options & OPT_DOT_FILES) && dp->d_name[0] == '.' && dp->d_name[1])
+		{
+			printf("jump dot file: %s\n", dp->d_name);
+			continue ;
+		}
 
 		if (!(newpath = ft_strjoin_free(ft_strjoin_free(path, "/", 0, 0), dp->d_name, 1, 0)))
 			return (pft_error(ctx->exec_name, "", MALLOC_FAILED, NULL));
@@ -51,9 +56,9 @@ t_entry		*make_node_entry(
 			(*begin)->node = new;
 
 		/* REVERSE */
-		if ((ctx->options & OPT_REVERSE) && push_sort_entry(begin, &new, &compare_alpha) == NULL)
+		if ((ctx->options & OPT_REVERSE) && push_sort_entry(begin, &new, &compare_reverse) == NULL)
 			return (pft_error(ctx->exec_name, "", UNKNOWN_ERROR, NULL));
-		else if (!(ctx->options & OPT_REVERSE) && push_back_entry(begin, &new) == NULL)
+		else if (!(ctx->options & OPT_REVERSE) && push_sort_entry(begin, &new, &compare_standard) == NULL)
 			return (pft_error(ctx->exec_name, "", UNKNOWN_ERROR, NULL));
 
 		/* RECURSIVE */

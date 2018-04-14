@@ -59,7 +59,7 @@ t_entry		*make_node_entry(
 	t_context const *ctx,
 	t_entry **begin,
 	char const * const path,
-	char rec
+	char make_node
 );
 
 #endif
