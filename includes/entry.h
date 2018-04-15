@@ -7,9 +7,6 @@
 # include "mystdint.h"
 # include "options.h"
 
-# define	CUR_DIR_STR		"."
-# define	PARENT_DIR_STR	".."
-
 # define	MODE_IS_NODE	0x01
 
 typedef struct		s_entry

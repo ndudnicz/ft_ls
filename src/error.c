@@ -3,12 +3,13 @@
 
 #include "libftasm.h"
 #include "libft.h"
+#include "mystdint.h"
 
-int		ft_error(
+t_s32	ft_error(
 	char const * const s1,
 	char const * const s2,
 	char const * const s3,
-	int const ret
+	t_s32 const ret
 )
 {
 	ft_putstr_fd(s1, 2);
@@ -19,10 +20,10 @@ int		ft_error(
 	return (ret);
 }
 
-int		ft_perror(
+t_s32	ft_perror(
 	char const * const s1,
 	char const * const s2,
-	int const ret
+	t_s32 const ret
 )
 {
 	char const	*err = ft_strjoin_free(ft_strjoin(s1, ": "), s2, 1, 0);

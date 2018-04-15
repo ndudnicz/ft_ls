@@ -7,7 +7,8 @@ void	display_entries(
 );
 void	display_entries_debug(
 	t_context *ctx,
-	t_entry **begin
+	t_entry **begin,
+	char const is_in_node
 );
 
 #endif

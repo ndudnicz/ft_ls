@@ -4,7 +4,6 @@
 #include "mystdint.h"
 
 
-#include <stdio.h>//
 static t_entry	*insert_between(
 	t_entry **begin,
 	t_entry **prev,
@@ -12,7 +11,6 @@ static t_entry	*insert_between(
 	t_entry **next
 )
 {
-	// printf("%s %s %s\n", *prev ? (*prev)->name : "null", (*new)->name, (*next)->name);//
 	if (*prev)
 	{
 		(*prev)->next = *new;
@@ -30,7 +28,7 @@ static t_entry	*insert_between(
 
 	return (*new);
 }
-#include "display.h"//
+
 t_entry		*push_sort_entry(
 	t_entry **begin,
 	t_entry **new,
@@ -47,8 +45,8 @@ t_entry		*push_sort_entry(
 	}
 	else if (*begin == NULL)
 	{
-			*begin = *new;
-			(*new)->last = *new;
+		*begin = *new;
+		(*new)->last = *new;
 		return (*new);
 	}
 	else
@@ -56,7 +54,6 @@ t_entry		*push_sort_entry(
 		while (tmp)
 		{
 			cmp = compare(*new, tmp);
-
 			if (cmp < 0)
 			{
 				return (insert_between(begin, &tmp->prev, new, &tmp));

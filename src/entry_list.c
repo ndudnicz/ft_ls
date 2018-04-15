@@ -61,7 +61,7 @@ t_entry				*create_entry(
 
 	new = NULL;
 	if (
-		!fullname || !dir || !dir->d_name || !s ||
+		!fullname || !dir ||/* !dir->d_name ||*/ !s ||
 		!(new = new_entry()) ||
 		!init_entry(new, length, s) ||
 		!set_names(new, dir->d_name, fullname)

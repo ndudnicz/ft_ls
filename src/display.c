@@ -24,7 +24,8 @@ void	display_entries(
 
 void	display_entries_debug(
 	t_context *ctx,
-	t_entry **begin
+	t_entry **begin,
+	char const is_in_node
 )
 {
 	t_entry *tmp = *begin;
@@ -38,8 +39,30 @@ void	display_entries_debug(
 		}
 		else
 		{
-			ft_putendl(tmp->name);
+			ft_puts(tmp->name);
+		}
+		tmp = tmp->next;
+	}
+	if (ctx->options & OPT_RECURSIVE)
+	{
+		tmp = *begin;
+		while (tmp)
+		{
+			if (!(ctx->options & OPT_DOT_FILES) && tmp->name[0] == '.')
+			{
+				tmp = tmp->next;
+				continue ;
+			}
+			if (tmp->mode & MODE_IS_NODE)
+			{
+				ft_putchar('\n');
+				ft_putstr(tmp->fullname);
+				ft_puts(":");
+			}
+			display_entries_debug(ctx, &tmp->node, 1);
+
 			tmp = tmp->next;
 		}
+
 	}
 }

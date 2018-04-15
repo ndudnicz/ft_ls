@@ -5,6 +5,7 @@
 #include "entry.h"
 #include "display.h"
 #include "libft.h"//
+#include "free.h"
 
 
 int		main(int ac, char **av)
@@ -19,6 +20,11 @@ int		main(int ac, char **av)
 	ctx.exec_name = av[0];
 	make_node_entry(&ctx, &begin, ac > 1 && av[1] ? av[1] : ".", 0);
 
-	display_entries_debug(&ctx, &begin);
+	display_entries_debug(&ctx, &begin, 0);
+	// free_entries(&ctx, &begin);
+	begin = NULL;
+	// ft_memset(&ctx, 0, sizeof(t_context));
+	// while (1)
+	// ;
 	return (0);
 }
