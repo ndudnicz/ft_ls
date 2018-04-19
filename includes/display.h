@@ -1,11 +1,19 @@
 #ifndef DISPLAY_H
 # define DISPLAY_H
 
-void	display_entries(
+int		display_root_entries(
 	t_context *ctx,
-	t_entry *begin
+	char const * const rootname,
+	t_entry **begin,
+	char const is_in_node
 );
-void	display_entries_debug(
+
+int		display_entries(
+	t_context *ctx,
+	t_entry **begin
+);
+
+int		display_entries_debug(
 	t_context *ctx,
 	t_entry **begin,
 	char const is_in_node

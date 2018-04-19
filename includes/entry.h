@@ -12,13 +12,14 @@
 typedef struct		s_entry
 {
 	struct stat		stat;
-	char			*name; // malloc
-	char			*fullname; // malloc
 	struct s_entry	*next;
 	struct s_entry	*prev;
 	struct s_entry	*last;
 	struct s_entry	*node;
+	char			*name; // malloc
+	char			*fullname; // malloc
 	t_u64			length;
+	t_u8			name_len;
 	char			mode;
 }					t_entry;
 
@@ -57,6 +58,20 @@ t_entry		*make_node_entry(
 	t_entry **begin,
 	char const * const path,
 	char make_node
+);
+
+t_entry		*make_root_entries(
+	t_context const *ctx,
+	t_entry **begin,
+	char const * const path
+	// char make_node
+);
+
+t_entry		*make_root_childs_entries(
+	t_context const *ctx,
+	t_entry **begin,
+	char const * const path
+	// char make_node
 );
 
 #endif

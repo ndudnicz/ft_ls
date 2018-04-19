@@ -18,9 +18,9 @@ int		main(int ac, char **av)
 	if (get_options(&ctx, &ac, av))
 		return (EXIT_FAILURE);
 	ctx.exec_name = av[0];
-	make_node_entry(&ctx, &begin, ac > 1 && av[1] ? av[1] : ".", 0);
+	make_root_entries(&ctx, &begin, ac > 1 && av[1] ? av[1] : ".");
 
-	display_entries_debug(&ctx, &begin, 0);
+	// display_entries_debug(&ctx, &begin, 0);
 	// free_entries(&ctx, &begin);
 	begin = NULL;
 	// ft_memset(&ctx, 0, sizeof(t_context));
