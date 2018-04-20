@@ -15,10 +15,12 @@
 
 # define PARAMS_STR				"lRart"
 
+# include "mystdint.h"
+
 typedef struct		s_context
 {
 	char			*exec_name;
-	unsigned char	options;
+	t_u8			options;
 }					t_context;
 
 int		get_options(t_context *ctx, int *ac, char **av);

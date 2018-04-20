@@ -74,8 +74,8 @@ t_entry		*create_entry(
 // 	// char make_node
 // );
 t_entry		*make_entries(
-	t_context *ctx,
-	t_entry **begin,
+	t_context volatile ctx,
+	t_entry *begin,
 	char const * const path
 );
 #endif

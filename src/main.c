@@ -18,7 +18,8 @@ int		main(int ac, char **av)
 	if (get_options(&ctx, &ac, av))
 		return (EXIT_FAILURE);
 	ctx.exec_name = av[0];
-	make_entries(&ctx, &begin, ac > 1 && av[1] ? av[1] : ".");
+	// printf("options:%d\n", ctx.options);
+	make_entries(ctx, begin, ac > 1 && av[1] ? av[1] : ".");
 
 	// display_entries(&ctx, &begin, 0);
 	// free_entries(&ctx, &begin);
