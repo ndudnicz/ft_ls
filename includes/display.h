@@ -3,14 +3,15 @@
 
 int		display_root_entries(
 	t_context *ctx,
-	char const * const rootname,
-	t_entry **begin,
-	char const is_in_node
+	t_entry **begin
+	// char const * const rootname
+	// char const is_in_node
 );
 
 int		display_entries(
 	t_context *ctx,
-	t_entry **begin
+	t_entry **begin,
+	char const is_in_node
 );
 
 int		display_entries_debug(

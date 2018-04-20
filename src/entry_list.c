@@ -34,6 +34,7 @@ static t_entry		*set_names(
 	!(new->fullname = ft_strdup(fullname)))
 		return (NULL);
 	else{
+	// printf("init_entry: %s\n", new->name);
 		return (new);
 
 	}

@@ -53,25 +53,29 @@ t_entry		*create_entry(
 /*
 ** entry_parse.c
 */
-t_entry		*make_node_entry(
-	t_context const *ctx,
-	t_entry **begin,
-	char const * const path,
-	char make_node
-);
-
-t_entry		*make_root_entries(
-	t_context const *ctx,
+// t_entry		*make_node_entry(
+// 	t_context const *ctx,
+// 	t_entry **begin,
+// 	char const * const path,
+// 	char make_node
+// );
+//
+// t_entry		*make_root_entries(
+// 	t_context const *ctx,
+// 	t_entry **begin,
+// 	char const * const path
+// 	// char make_node
+// );
+//
+// t_entry		*make_root_childs_entries(
+// 	t_context const *ctx,
+// 	t_entry **begin,
+// 	char const * const path
+// 	// char make_node
+// );
+t_entry		*make_entries(
+	t_context *ctx,
 	t_entry **begin,
 	char const * const path
-	// char make_node
 );
-
-t_entry		*make_root_childs_entries(
-	t_context const *ctx,
-	t_entry **begin,
-	char const * const path
-	// char make_node
-);
-
 #endif
