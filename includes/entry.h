@@ -37,7 +37,8 @@ t_entry		*push_sort_entry(
 */
 t_entry		*push_back_entry(
 	t_entry **begin,
-	t_entry **new
+	t_entry **new,
+	t_entry **last
 );
 
 /*
@@ -47,35 +48,15 @@ t_entry		*create_entry(
 	t_u64 const length,
 	struct stat *s,
 	struct dirent *dir,
-	char const * const fullname
+	char const *const fullname
 );
 
 /*
 ** entry_parse.c
 */
-// t_entry		*make_node_entry(
-// 	t_context const *ctx,
-// 	t_entry **begin,
-// 	char const * const path,
-// 	char make_node
-// );
-//
-// t_entry		*make_root_entries(
-// 	t_context const *ctx,
-// 	t_entry **begin,
-// 	char const * const path
-// 	// char make_node
-// );
-//
-// t_entry		*make_root_childs_entries(
-// 	t_context const *ctx,
-// 	t_entry **begin,
-// 	char const * const path
-// 	// char make_node
-// );
 t_entry		*make_entries(
-	t_context volatile ctx,
+	t_context *ctx,
 	t_entry *begin,
-	char const * const path
+	char const *const path
 );
 #endif

@@ -6,9 +6,9 @@
 #include "mystdint.h"
 
 t_s32	ft_error(
-	char const * const s1,
-	char const * const s2,
-	char const * const s3,
+	char const *const s1,
+	char const *const s2,
+	char const *const s3,
 	t_s32 const ret
 )
 {
@@ -21,8 +21,8 @@ t_s32	ft_error(
 }
 
 t_s32	ft_perror(
-	char const * const s1,
-	char const * const s2,
+	char const *const s1,
+	char const *const s2,
 	t_s32 const ret
 )
 {
@@ -39,9 +39,9 @@ t_s32	ft_perror(
 }
 
 void	*pft_error(
-	char const * const s1,
-	char const * const s2,
-	char const * const s3,
+	char const *const s1,
+	char const *const s2,
+	char const *const s3,
 	void *ret
 )
 {
@@ -54,8 +54,8 @@ void	*pft_error(
 }
 
 void	*pft_perror(
-	char const * const s1,
-	char const * const s2,
+	char const *const s1,
+	char const *const s2,
 	void *ret
 )
 {

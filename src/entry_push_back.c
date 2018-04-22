@@ -5,29 +5,23 @@
 /*
 ** Push back the new entry at the end of the entry list
 */
-#include <stdio.h>//
 t_entry		*push_back_entry(
 	t_entry **begin,
-	t_entry **new
+	t_entry **new,
+	t_entry **last
 )
 {
-	// printf("push_back: %s\n\n", (*new)->name); //
-	if (*new == NULL)
+	t_entry		*tmp;
+	tmp = *begin;
+	if (!tmp)
 	{
-		// puts("a");
-		return (NULL);
-	}
-	if (*begin == NULL)
-	{
-		// puts("b");
 		*begin = *new;
+		*last = *new;
 	}
-	if ((*begin)->last)
+	else
 	{
-		// puts("c");
-		(*new)->prev = (*begin)->last;
-		(*begin)->last->next = *new;
+		(*last)->next = *new;
+		*last = *new;
 	}
-	(*begin)->last = *new;
 	return (*begin);
 }

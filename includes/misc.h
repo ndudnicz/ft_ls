@@ -4,6 +4,6 @@
 # define	CUR_DIR_STR		"."
 # define	PARENT_DIR_STR	".."
 
-int		is_dot_double_dot(char const * const filename);
+int		is_dot_double_dot(char const *const filename);
 
 #endif

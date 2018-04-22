@@ -23,6 +23,10 @@ typedef struct		s_context
 	t_u8			options;
 }					t_context;
 
-int		get_options(t_context *ctx, int *ac, char **av);
+int		get_options(
+	t_context *ctx,
+	int *ac,
+	char **av
+);
 
 #endif

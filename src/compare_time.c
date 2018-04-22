@@ -3,7 +3,7 @@
 #include "compare.h"
 
 t_s32	compare_time_modified(
-	t_entry* a,
+	t_entry *a,
 	t_entry *b
 )
 {
@@ -19,7 +19,7 @@ t_s32	compare_time_modified(
 }
 
 t_s32	compare_time_modified_reverse(
-	t_entry* a,
+	t_entry *a,
 	t_entry *b
 )
 {

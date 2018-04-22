@@ -1,60 +1,63 @@
+#include <stdlib.h>
+
 #include "entry.h"
 #include "libftasm.h"
 #include "libft.h"
 #include "misc.h"
 #include "mystdint.h"
 
-#include <stdio.h>//
+// #include <stdio.h>//
 
-int		display_root_entries(
+// __attribute__((always_inline)) static void	free_entry(t_entry **entry)
+// {
+// 	free((*entry)->name);
+// 	// (*entry)->name = NULL;
+// 	free((*entry)->fullname);
+// 	// (*entry)->fullname = NULL;
+// 	// free(*entry);
+// 	// *entry = NULL;
+// }
+
+int									display_root_entries(
 	t_u8 const options,
 	t_entry *begin
 )
 {
 	t_entry		*tmp;
+	t_entry		*next;
 
 	tmp = begin;
-	// write(1, "C\n", 2);
 	while (tmp)
 	{
-
-	// // printf("%c\n", tmp->name[0]);
 		if (!(options & OPT_DOT_FILES) && tmp->name && tmp->name[0] == '.')
 		{
-	// write(1, "C\n", 2);
-
-			tmp = tmp->next;
+			next = tmp->next;
+			// free_entry(&tmp);
+			tmp = next;
 		}
 		else
 		{
-	// write(1, "B\n", 2);
+	// puts("b");
 			ft_puts(tmp->name);
-			tmp = tmp->next;
+			next = tmp->next;
+			// free_entry(&tmp);
+			tmp = next;
+	// puts("a");
 		}
 	}
 	return (0);
 }
 
-
-// int		display_entries_debug(
-// 	t_context *ctx,
-// 	t_entry **begin,
-// 	char const is_in_node
-// )
-// {
-// 	return (0);
-// }
-
-int		display_entries(
+int				display_entries(
 	t_context *ctx,
 	t_entry *begin,
 	char const is_in_node
 )
 {
 	t_entry		*tmp;
+	t_entry		*next;
 
 	tmp = begin;
-	// printf("%p\n", *begin);
 	if (!is_in_node)
 		display_root_entries(ctx->options, begin);
 	while (tmp)
@@ -63,11 +66,12 @@ int		display_entries(
 		{
 			ft_putstr(tmp->fullname);
 			ft_puts(":\n");
-			// printf("%s:\n", tmp->fullname);
 			display_root_entries(ctx->options, tmp->node);
 			display_entries(ctx, tmp->node, 1);
 		}
-		tmp = tmp->next;
+		next = tmp->next;
+		// free_entry(&tmp);
+		tmp = next;
 	}
 	return (0);
 }

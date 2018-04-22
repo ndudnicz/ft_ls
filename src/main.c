@@ -11,21 +11,11 @@
 int		main(int ac, char **av)
 {
 	t_context	ctx;
-	t_entry		*begin;
 
-	begin = NULL;
 	ft_memset((void*)&ctx, 0, sizeof(t_context));
 	if (get_options(&ctx, &ac, av))
 		return (EXIT_FAILURE);
 	ctx.exec_name = av[0];
-	// printf("options:%d\n", ctx.options);
-	make_entries(ctx, begin, ac > 1 && av[1] ? av[1] : ".");
-
-	// display_entries(&ctx, &begin, 0);
-	// free_entries(&ctx, &begin);
-	// begin = NULL;
-	// ft_memset(&ctx, 0, sizeof(t_context));
-	// while (1)
-	// ;
+	make_entries(&ctx, NULL, ac > 1 && av[1] ? av[1] : ".");
 	return (0);
 }
