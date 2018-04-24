@@ -60,8 +60,12 @@ static t_entry			*make_root(
 			stat(newpath, &s);
 			if (!(new = create_entry(/**begin ? (*begin)->length : */0, &s, dp, newpath)))
 				return (pft_error(exec_name, "", MALLOC_FAILED, NULL));
-			if (push_sort_entry(begin, &new, &compare_lex_standard) == NULL)
+
+			// if (push_sort_entry(begin, &new, &compare_lex_standard) == NULL)
+			// 	return (pft_error(exec_name, "", UNKNOWN_ERROR, NULL));
+			if (push_back_entry(begin, &new, &(*begin)->last) == NULL)
 				return (pft_error(exec_name, "", UNKNOWN_ERROR, NULL));
+
 			free((void*)newpath);
 		}
 	}

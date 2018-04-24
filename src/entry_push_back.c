@@ -11,17 +11,16 @@ t_entry		*push_back_entry(
 	t_entry **last
 )
 {
-	t_entry		*tmp;
-	tmp = *begin;
-	if (!tmp)
+	if (*begin == NULL)
 	{
 		*begin = *new;
-		*last = *new;
+		(*new)->last = *new;
 	}
 	else
 	{
+		(*new)->prev = *last;
 		(*last)->next = *new;
-		*last = *new;
+		(*begin)->last = *new;
 	}
 	return (*begin);
 }
