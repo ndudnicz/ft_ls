@@ -3,8 +3,7 @@
 #include "entry.h"
 #include "mystdint.h"
 
-#include "debug.h"//
-#include <stdio.h>//
+// #include <stdio.h>//
 
 static t_entry	*insert_between(
 	t_entry **begin,
@@ -31,7 +30,7 @@ static t_entry	*insert_between(
 	return (*new);
 }
 
-t_entry		*push_sort_entry(
+static t_entry	*push_sort_entry_norme(
 	t_entry **begin,
 	t_entry **new,
 	t_s32	(*compare)(t_entry*, t_entry*)
@@ -41,6 +40,35 @@ t_entry		*push_sort_entry(
 	int			cmp;
 
 	tmp = *begin;
+	while (tmp)
+	{
+		cmp = compare(*new, tmp);
+		if (cmp < 0)
+		{
+			return (insert_between(begin, &tmp->prev, new, &tmp));
+		}
+		else
+		{
+			if (tmp->next)
+				tmp = tmp->next;
+			else
+			{
+				(*new)->prev = tmp;
+				tmp->next = *new;
+				(*begin)->last = *new;
+				return (*begin);
+			}
+		}
+	}
+	return (*begin);
+}
+
+t_entry		*push_sort_entry(
+	t_entry **begin,
+	t_entry **new,
+	t_s32	(*compare)(t_entry*, t_entry*)
+)
+{
 	if (*begin == NULL)
 	{
 		*begin = *new;
@@ -48,27 +76,5 @@ t_entry		*push_sort_entry(
 		return (*new);
 	}
 	else
-	{
-		while (tmp)
-		{
-			cmp = compare(*new, tmp);
-			if (cmp < 0)
-			{
-				return (insert_between(begin, &tmp->prev, new, &tmp));
-			}
-			else
-			{
-				if (tmp->next)
-					tmp = tmp->next;
-				else
-				{
-					(*new)->prev = tmp;
-					tmp->next = *new;
-					(*begin)->last = *new;
-					return (*begin);
-				}
-			}
-		}
-	}
-	return (*begin);
+		return (push_sort_entry_norme(begin, new, compare));
 }

@@ -25,8 +25,7 @@ compare_lex.c \
 compare_time.c \
 display.c \
 misc.c \
-free.c \
-debug.c
+free.c
 
 OBJ = $(SRC:%.c=obj/%.o)
 

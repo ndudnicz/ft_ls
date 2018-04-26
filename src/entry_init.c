@@ -39,7 +39,7 @@ t_entry		*init_long_entry(
 	new->entry_long->grp_name = ft_strdup(g->gr_name);
 
 	// free(g);
-	printf("%s\n", new->entry_long->grp_name);
+	// printf("%s\n", new->entry_long->grp_name);
 
 	return (new);
 }
