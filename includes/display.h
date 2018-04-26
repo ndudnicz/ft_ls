@@ -6,10 +6,4 @@ int		display_root_entries(
 	t_entry *begin
 );
 
-int		display_entries(
-	t_context *ctx,
-	t_entry *begin,
-	char const is_in_node
-);
-
 #endif

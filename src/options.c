@@ -1,14 +1,14 @@
 #include <stdlib.h>
 
-#include "options.h"
+// #include "entry.h"
 #include "error.h"
 #include "libftasm.h"
+#include "options.h"
 
 /*
 ** Moves NULLs argv to the end of the array. Options are set in config
 ** and doesn't exist anymore in argv.
 */
-
 static void	del_null_params(
 	int *ac,
 	char **av,
