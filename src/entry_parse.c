@@ -19,7 +19,7 @@ static t_entry		*make_root_norme(t_var_box *vb)
 	char			*newpath;
 	struct stat 	s[2];
 	t_entry			*new;
-	t_u8 const		options = vb->ctx->options;
+	// t_u8 const		options = vb->ctx->options;
 
 	newpath = NULL;
 	new = NULL;
@@ -28,10 +28,9 @@ static t_entry		*make_root_norme(t_var_box *vb)
 		return (pft_error(vb->exec_name, "", MALLOC_FAILED, NULL));
 	stat(newpath, &s[0]);
 	lstat(newpath, &s[1]);
-	if (!(new = create_entry(/**begin ? (*begin)->length : */0, s, vb->dp,
-	newpath)))
+	if (!(new = create_entry(vb->begin, s, vb->dp, newpath)))
 		return (pft_error(vb->exec_name, "", MALLOC_FAILED, NULL));
-	if (push_sort_entry(vb->begin, &new, vb->ctx->sort_ptr[options & SORT_MASK])
+	if (push_sort_entry(vb->begin, &new, vb->ctx->sort_ptr)
 	== NULL)
 		return (pft_error(vb->exec_name, "", UNKNOWN_ERROR, NULL));
 	free((void*)newpath);

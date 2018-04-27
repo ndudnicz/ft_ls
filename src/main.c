@@ -7,6 +7,7 @@
 #include "options.h"
 #include "entry_parse.h"
 #include "entry_parse_long.h"
+#include "error.h"
 
 static t_s32	usage(t_s32 const ret)
 {
@@ -14,12 +15,32 @@ static t_s32	usage(t_s32 const ret)
 	return (ret);
 }
 
-static void		init_sort_ptr(t_context *ctx)
+static t_s32	init_sort_ptr(t_context *ctx)
 {
-	ctx->sort_ptr[0] = compare_lex_standard;
-	ctx->sort_ptr[1] = compare_lex_reverse;
-	ctx->sort_ptr[2] = compare_time_modified;
-	ctx->sort_ptr[3] = compare_time_modified_reverse;
+	if ((ctx->options & SORT_MASK) == 0)
+	{
+		ctx->sort_ptr = &compare_lex_standard;
+		return (EXIT_SUCCESS);
+	}
+	else if ((ctx->options & SORT_MASK) == OPT_REVERSE)
+	{
+		ctx->sort_ptr = &compare_lex_reverse;
+		return (EXIT_SUCCESS);
+	}
+	else if ((ctx->options & SORT_MASK) == OPT_SORT_TIME)
+	{
+		ctx->sort_ptr = &compare_time_modified;
+		return (EXIT_SUCCESS);
+	}
+	else if ((ctx->options & SORT_MASK) == OPT_REVERSE + OPT_SORT_TIME)
+	{
+		ctx->sort_ptr = &compare_time_modified_reverse;
+		return (EXIT_SUCCESS);
+	}
+	else
+		return (ft_error(ctx->exec_name, "init_sort_ptr()",
+		UNKNOWN_ERROR, EXIT_FAILURE));
+
 }
 
 static t_entry	*switch_make_entries(
@@ -51,7 +72,8 @@ int				main(int ac, char **av)
 	if (get_options(&ctx, &ac, av))
 		return (usage(EXIT_FAILURE));
 	ctx.exec_name = av[0];
-	init_sort_ptr(&ctx);
+	if (init_sort_ptr(&ctx) == EXIT_FAILURE)
+		return (EXIT_FAILURE);
 	switch_make_entries(&ctx, ac > 1 && av[1] ? av[1] : ".");
-	return (0);
+	return (EXIT_SUCCESS);
 }

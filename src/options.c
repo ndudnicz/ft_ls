@@ -119,7 +119,7 @@ int	get_options(
 // 	// 	} else if (options->st_key.key_size != KEY_LENGTH && !(options->options & OPT_GEN_KEY)) {
 // 	// 		return ft_error(exec_name, "valid_options()", INVALID_KEY_LENGTH, 1);
 // 	// 	} else {
-// 	// 		return ft_error(exec_name, "valid_options()", UNKNOW_ERROR, 1);
+// 	// 		return ft_error(exec_name, "valid_options()", UNKNOWN_ERROR, 1);
 // 	// 	}
 // 	// }
 // }

@@ -24,7 +24,7 @@ typedef t_s32			(*t_sort_ptr)(t_entry*, t_entry*);
 
 typedef struct	s_context
 {
-	t_sort_ptr		sort_ptr[4];
+	t_sort_ptr		sort_ptr;
 	char			*exec_name;
 	t_u8			options;
 }				t_context;
