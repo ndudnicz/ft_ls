@@ -16,9 +16,9 @@ typedef struct		s_entry_long
 	t_s64	biggest_size;
 	t_u64	biggest_nlink;
 	t_u64	total;
-	char	*date; // malloc
-	char	*username; // malloc ?
-	char	*grp_name; // malloc ?
+	char	date[13];
+	char	*username; // malloc
+	char	*grp_name; // malloc
 }					t_entry_long;
 
 typedef struct		s_entry

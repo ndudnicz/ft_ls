@@ -2,6 +2,9 @@
 #include <stdlib.h>//
 #include <grp.h>
 #include <unistd.h>
+#include <uuid/uuid.h>
+#include <pwd.h>
+#include <sys/types.h>
 
 #include "entry.h"
 #include "libftasm.h"
@@ -9,10 +12,14 @@
 #include "error.h"
 #include "entry_init.h"
 
-static void	get_right(t_u8 const r, char *s)
+inline static void	get_right(
+	t_u8 const p,
+	t_u8 const r,
+	char *s)
 {
-	// printf("%o\n", r);
-	if (r & 1)
+	if (p)
+		s[2] = 's';
+	else if (r & 1)
 		s[2] = 'x';
 	else
 		s[2] = '-';
@@ -26,7 +33,7 @@ static void	get_right(t_u8 const r, char *s)
 		s[0] = '-';
 }
 
-static char	get_type(struct stat *s)
+inline static char	get_type(struct stat *s)
 {
 	if (S_ISBLK(s->st_mode))
 		return ('b');
@@ -47,10 +54,11 @@ static char	get_type(struct stat *s)
 static void	make_rights(t_entry *new)
 {
 	new->entry_long->rights[0] = get_type(&new->lstat);
-	get_right((new->lstat.st_mode & 07), new->entry_long->rights + 7);
-	get_right((new->lstat.st_mode & 070) >> 3, new->entry_long->rights + 4);
-	get_right((new->lstat.st_mode & 0700) >> 6, new->entry_long->rights + 1);
-	// printf("%s %s\n", new->entry_long->rights, new->name);
+	get_right(0, (new->lstat.st_mode & 07), new->entry_long->rights + 7);
+	get_right(((new->lstat.st_mode & 07000) >> 9) & 2,
+	(new->lstat.st_mode & 070) >> 3, new->entry_long->rights + 4);
+	get_right(((new->lstat.st_mode & 07000) >> 9) & 4,
+	(new->lstat.st_mode & 0700) >> 6, new->entry_long->rights + 1);
 }
 
 /*
@@ -64,10 +72,12 @@ t_entry		*init_long_entry(
 {
 	char const *const str = ctime(&(s[0].st_atime));
 	struct group const *g = getgrgid(s[0].st_gid);
+	struct passwd const *pw = getpwuid(s[0].st_uid);
 
 	init_entry(begin, new, s);
-	new->entry_long->date = ft_strndup(str + 4, 12);
+	ft_memcpy(new->entry_long->date, str + 4, 12);
 	new->entry_long->grp_name = ft_strdup(g->gr_name);
+	new->entry_long->username = ft_strdup(pw->pw_name);
 	if (*begin)
 	{
 		if (s[1].st_nlink > (*begin)->entry_long->biggest_nlink)

@@ -6,7 +6,7 @@
 #include "error.h"
 #include "compare.h"
 #include "misc.h"
-#include "display.h"
+#include "display_long.h"
 #include "free.h"
 #include "entry_list_long.h"
 #include "entry_push_sort.h"
@@ -85,11 +85,11 @@ t_entry					*make_entries_long(
 	t_entry		*next;
 
 	make_root(ctx, ctx->exec_name, &begin, path);
-	display_root_entries(ctx->options, begin);
+	display_root_entries_long(ctx->options, begin);
 	while (begin)
 	{
 		next = begin->next;
-		free_entry(&begin);
+		free_entry_long(&begin);
 		begin = next;
 	}
 	return (begin);
@@ -107,7 +107,8 @@ t_entry					*make_entries_recursive_long(
 {
 	t_entry		*next;
 	make_root(ctx, ctx->exec_name, &begin, path);
-	display_root_entries(ctx->options, begin);
+	if (display_root_entries_long(ctx->options, begin))
+		return (NULL);
 	while (begin)
 	{
 		if (!(begin->mode & MODE_IS_SYM) && (begin->mode & MODE_IS_NODE) && !is_dot_double_dot(begin->name))
@@ -118,7 +119,7 @@ t_entry					*make_entries_recursive_long(
 			make_entries_recursive_long(ctx, begin->node, begin->fullname);
 		}
 		next = begin->next;
-		free_entry(&begin);
+		free_entry_long(&begin);
 		begin = next;
 	}
 	return (begin);
