@@ -6,11 +6,15 @@
 #include "error.h"
 #include "mystdint.h"
 #include "entry_init.h"
+#include "misc.h"
 
+/*
+** Dup names values in entry structure
+*/
 static t_entry		*set_names(
 	t_entry *new,
-	char const * const name,
-	char const * const fullname
+	char const *const name,
+	char const *const fullname
 )
 {
 	if (!new || !name || !fullname || !(new->name = ft_strdup(name)) ||
@@ -21,21 +25,11 @@ static t_entry		*set_names(
 }
 
 /*
-** Return a fresh 0ed entry
-*/
-static t_entry		*new_entry(void)
-{
-	t_u64 const	s = sizeof(t_entry);
-
-	return ((t_entry*)ft_memset((void*)malloc(s), 0, s));
-}
-
-/*
 ** Create a new entry, init it and return it
 */
 t_entry				*create_entry(
 	t_u64 const length,
-	struct stat *s,
+	struct stat s[2],
 	struct dirent *dir,
 	char const *fullname
 )
@@ -44,8 +38,7 @@ t_entry				*create_entry(
 
 	new = NULL;
 	if (
-		!fullname || !dir || !s ||
-		!(new = new_entry()) ||
+		!fullname || !dir || !(new = (t_entry*)my_calloc(sizeof(t_entry))) ||
 		!init_entry(new, length, s, dir->d_namlen) ||
 		!set_names(new, dir->d_name, fullname)
 	)
@@ -54,28 +47,27 @@ t_entry				*create_entry(
 		return (new);
 }
 
+/*
+** Create a new entry, init it and return it, -l -l -l -l
+*/
 t_entry				*create_long_entry(
 	t_u64 const length,
-	struct stat *s,
+	struct stat s[2],
 	struct dirent *dir,
 	char const *fullname
 )
 {
 	t_entry		*new;
+	t_u64 const	size = sizeof(t_entry_long);
 
 	new = NULL;
 	if (
-		!fullname || !dir || !s ||
-		!(new = new_entry()) ||
+		!fullname || !dir || !(new = (t_entry*)my_calloc(sizeof(t_entry))) ||
 		!set_names(new, dir->d_name, fullname) ||
-		!(new->entry_long = (t_entry_long*)malloc(sizeof(t_entry_long))) ||
+		!(new->entry_long = (t_entry_long*)my_calloc(size)) ||
 		!init_long_entry(new, length, s, dir->d_namlen)
 	)
 		return (pft_error("Error", "create_entry()", MALLOC_FAILED, NULL));
 	else
-	{
-		// printf("%p\n", new->entry_long);
 		return (new);
-
-	}
 }

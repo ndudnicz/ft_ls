@@ -5,7 +5,6 @@
 #include <dirent.h>
 
 # include "mystdint.h"
-// # include "options.h"
 
 # define	MODE_IS_NODE	0x01
 # define	MODE_IS_SYM		0x02
@@ -21,6 +20,7 @@ typedef struct		s_entry_long
 typedef struct		s_entry
 {
 	struct stat		stat;
+	struct stat		lstat;
 	struct s_entry	*next;
 	struct s_entry	*prev;
 	struct s_entry	*last;
@@ -28,7 +28,6 @@ typedef struct		s_entry
 	t_entry_long	*entry_long; // malloc
 	char			*name; // malloc
 	char			*fullname; // malloc
-
 	t_u64			length;
 	t_u8			name_len;
 	char			mode;

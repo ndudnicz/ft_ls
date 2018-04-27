@@ -3,8 +3,6 @@
 #include "entry.h"
 #include "mystdint.h"
 
-// #include <stdio.h>//
-
 static t_entry	*insert_between(
 	t_entry **begin,
 	t_entry **prev,

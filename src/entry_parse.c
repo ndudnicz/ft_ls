@@ -11,10 +11,13 @@
 #include "entry_list.h"
 #include "entry_push_sort.h"
 
+/*
+** thx 42 norme.
+*/
 static t_entry		*make_root_norme(t_var_box *vb)
 {
 	char			*newpath;
-	struct stat 	s;
+	struct stat 	s[2];
 	t_entry			*new;
 	t_u8 const		options = vb->ctx->options;
 
@@ -23,8 +26,9 @@ static t_entry		*make_root_norme(t_var_box *vb)
 	if (!(newpath = ft_strjoin_free(ft_strjoin(vb->path, "/"),
 	vb->dp->d_name, 1, 0)))
 		return (pft_error(vb->exec_name, "", MALLOC_FAILED, NULL));
-	stat(newpath, &s);
-	if (!(new = create_entry(/**begin ? (*begin)->length : */0, &s, vb->dp,
+	stat(newpath, &s[0]);
+	lstat(newpath, &s[1]);
+	if (!(new = create_entry(/**begin ? (*begin)->length : */0, s, vb->dp,
 	newpath)))
 		return (pft_error(vb->exec_name, "", MALLOC_FAILED, NULL));
 	if (push_sort_entry(vb->begin, &new, vb->ctx->sort_ptr[options & SORT_MASK])
@@ -34,6 +38,10 @@ static t_entry		*make_root_norme(t_var_box *vb)
 	return (new);
 }
 
+/*
+** Make entries of the given path
+** t_var_box: thx 42 norme.
+*/
 static t_entry		*make_root(
 	t_context *ctx,
 	char *exec_name,
@@ -66,6 +74,9 @@ static t_entry		*make_root(
 	return (*begin);
 }
 
+/*
+** Make entries, starting at the given path
+*/
 t_entry					*make_entries(
 	t_context *ctx,
 	t_entry *begin,
@@ -85,6 +96,9 @@ t_entry					*make_entries(
 	return (begin);
 }
 
+/*
+** Make entries recursively, starting at the given path
+*/
 t_entry					*make_entries_recursive(
 	t_context *ctx,
 	t_entry *begin,
@@ -97,7 +111,8 @@ t_entry					*make_entries_recursive(
 	display_root_entries(ctx->options, begin);
 	while (begin)
 	{
-		if ((begin->mode & MODE_IS_NODE) && !is_dot_double_dot(begin->name))
+		if (!(begin->mode & MODE_IS_SYM) && (begin->mode & MODE_IS_NODE) &&
+		!is_dot_double_dot(begin->name))
 		{
 			ft_putchar('\n');
 			ft_putstr(begin->fullname);

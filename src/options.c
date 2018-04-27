@@ -100,26 +100,26 @@ int	get_options(
 ** return 0 if ok, 1 and display an error msg if not ok
 */
 
-int	valid_options(
-	// char const *exec_name,
-	// t_context *ctx
-)
-{
-	return (0);
-	// if (options->st_key.key_size == KEY_LENGTH && (options->options & OPT_FILE)) {
-	// 	return 0;
-	// } else if (
-	// 	options->st_key.key_size != KEY_LENGTH &&
-	// 	((options->options & (OPT_GEN_KEY | OPT_FILE)) == (OPT_GEN_KEY | OPT_FILE))
-	// ) {
-	// 	return 0;
-	// } else {
-	// 	if (!(options->options & OPT_FILE)) {
-	// 		return ft_error(exec_name, "valid_options()", MISSING_INPUT_FILE, 1);
-	// 	} else if (options->st_key.key_size != KEY_LENGTH && !(options->options & OPT_GEN_KEY)) {
-	// 		return ft_error(exec_name, "valid_options()", INVALID_KEY_LENGTH, 1);
-	// 	} else {
-	// 		return ft_error(exec_name, "valid_options()", UNKNOW_ERROR, 1);
-	// 	}
-	// }
-}
+// int	valid_options(
+// 	// char const *exec_name,
+// 	// t_context *ctx
+// )
+// {
+// 	return (0);
+// 	// if (options->st_key.key_size == KEY_LENGTH && (options->options & OPT_FILE)) {
+// 	// 	return 0;
+// 	// } else if (
+// 	// 	options->st_key.key_size != KEY_LENGTH &&
+// 	// 	((options->options & (OPT_GEN_KEY | OPT_FILE)) == (OPT_GEN_KEY | OPT_FILE))
+// 	// ) {
+// 	// 	return 0;
+// 	// } else {
+// 	// 	if (!(options->options & OPT_FILE)) {
+// 	// 		return ft_error(exec_name, "valid_options()", MISSING_INPUT_FILE, 1);
+// 	// 	} else if (options->st_key.key_size != KEY_LENGTH && !(options->options & OPT_GEN_KEY)) {
+// 	// 		return ft_error(exec_name, "valid_options()", INVALID_KEY_LENGTH, 1);
+// 	// 	} else {
+// 	// 		return ft_error(exec_name, "valid_options()", UNKNOW_ERROR, 1);
+// 	// 	}
+// 	// }
+// }

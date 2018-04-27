@@ -12,3 +12,10 @@ void	free_entry(t_entry **entry)
 	free((*entry));
 	*entry = NULL;
 }
+
+void	free_entry_long(t_entry **entry)
+{
+	free((*entry)->entry_long->date);
+	(*entry)->entry_long->date = NULL;
+	free_entry(entry);
+}
