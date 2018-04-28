@@ -27,5 +27,6 @@ t_entry	*set_names(
 	char const *const fullname
 );
 
+void	ft_putuint64(t_u64 n);
 
 #endif

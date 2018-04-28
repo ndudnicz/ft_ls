@@ -31,3 +31,15 @@ t_entry	*set_names(
 	else
 		return (new);
 }
+
+void	ft_putuint64(t_u64 n)
+{
+	if (n >= 10)
+	{
+		ft_putuint64(n / 10);
+		ft_putuint64(n % 10);
+	}
+	else
+		ft_putchar((t_s32)n + 48);
+
+}

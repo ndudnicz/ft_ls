@@ -9,12 +9,19 @@
 # define	MODE_IS_NODE	0x01
 # define	MODE_IS_SYM		0x02
 
+typedef struct		s_sizes
+{
+	t_s64	biggest_size;
+	t_u64	biggest_size_len;
+	t_u64	biggest_nlink;
+	t_u64	biggest_nlink_len;
+}					t_sizes;
+
 typedef struct		s_entry_long
 {
 	char	sym_name[__DARWIN_MAXNAMLEN];
 	char	rights[11];
-	t_s64	biggest_size;
-	t_u64	biggest_nlink;
+	t_sizes	sizes;
 	t_u64	total;
 	char	date[13];
 	char	*username; // malloc

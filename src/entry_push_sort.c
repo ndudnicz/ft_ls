@@ -2,6 +2,7 @@
 
 #include "entry.h"
 #include "mystdint.h"
+#include "libftasm.h"
 
 static t_entry	*insert_between(
 	t_entry **begin,
@@ -23,6 +24,8 @@ static t_entry	*insert_between(
 	{
 		(*next)->prev = *new;
 		(*new)->next = *next;
+		// if ((*new)->entry_long)
+			// ft_memcpy(&(*new)->entry_long->sizes, &(*next)->entry_long->sizes, sizeof(t_sizes));
 	}
 
 	return (*new);

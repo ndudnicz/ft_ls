@@ -7,28 +7,63 @@
 #include "mystdint.h"
 #include "error.h"
 
-static int	format_line(t_entry *entry, char **line)
+#include <stdio.h>//
+
+static void	put_space(char *s, t_u64 len)
 {
-	t_u64 const	nlinks_len = ft_numberlen(entry->begin->entry_long->biggest_nlink, 10);
-	t_u64 const	size_len = ft_numberlen(entry->begin->entry_long->biggest_size, 10);
+	while (len > 1)
+	{
+		ft_strcat(s, " ");
+		len--;
+	}
+}
+
+static void	static_itoa(
+	char *s,
+	t_u64 n
+)
+{
+	if (n >= 10)
+	{
+		static_itoa(s, n % 10);
+		static_itoa(s - 1, n / 10);
+	}
+	else
+	{
+		*s = n + 48;
+	}
+}
+
+static int	format_line(
+	t_entry *entry,
+	char **line
+)
+{
 	t_u64 const user_len = ft_strlen(entry->entry_long->username);
 	t_u64 const grp_len = ft_strlen(entry->entry_long->grp_name);
 
-	if (!(*line = (char*)my_calloc(33 + nlinks_len + size_len + user_len + grp_len + ft_strlen(entry->name))))
+	if (!(*line = (char*)my_calloc(33 + entry->begin->entry_long->sizes.biggest_nlink_len + entry->begin->entry_long->sizes.biggest_size_len + user_len + grp_len + ft_strlen(entry->name) + 1 + (entry->mode & MODE_IS_SYM ? 4 + ft_strlen(entry->entry_long->sym_name) : 0))))
 		return (ft_error("", "format_line()", MALLOC_FAILED, 1));
 	ft_strncpy(*line, entry->entry_long->rights, 10);
 	ft_strcat(*line, "  ");
-	ft_strcat(*line, "B"); // nlink
-	ft_strcat(*line, "  ");
+	put_space(*line, entry->begin->entry_long->sizes.biggest_nlink_len - ft_numberlen(entry->lstat.st_nlink, 10));
+	static_itoa(*line + ft_strlen(*line) + ft_numberlen(entry->lstat.st_nlink, 10) - 1, entry->lstat.st_nlink);
+	ft_strcat(*line, " "); // 1
 	ft_strcat(*line, entry->entry_long->username);
-	ft_strcat(*line, "  ");
+	ft_strcat(*line, "  "); // 2
 	ft_strcat(*line, entry->entry_long->grp_name);
-	ft_strcat(*line, "  ");
-	ft_strcat(*line, "B"); // size
-	ft_strcat(*line, " ");
+	ft_strcat(*line, "  "); // 2
+	put_space(*line, entry->begin->entry_long->sizes.biggest_size_len - ft_numberlen(entry->lstat.st_size, 10));
+	static_itoa(*line + ft_strlen(*line) + ft_numberlen(entry->lstat.st_size, 10) - 1, entry->lstat.st_size);
+	ft_strcat(*line, " "); // 1
 	ft_strcat(*line, entry->entry_long->date);
-	ft_strcat(*line, " ");
+	ft_strcat(*line, " "); // 1
 	ft_strcat(*line, entry->name);
+	if (entry->mode & MODE_IS_SYM)
+	{
+		ft_strcat(*line, " -> ");
+		ft_strcat(*line, entry->entry_long->sym_name);
+	}
 	return (0);
 }
 

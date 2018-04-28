@@ -12,7 +12,7 @@
 #include "error.h"
 #include "entry_init.h"
 
-inline static void	get_right(
+static void	get_right(
 	t_u8 const p,
 	t_u8 const r,
 	char *s)
@@ -33,7 +33,7 @@ inline static void	get_right(
 		s[0] = '-';
 }
 
-inline static char	get_type(struct stat *s)
+static char	get_type(struct stat *s)
 {
 	if (S_ISBLK(s->st_mode))
 		return ('b');
@@ -70,7 +70,8 @@ t_entry		*init_long_entry(
 	struct stat s[2]
 )
 {
-	char const *const str = ctime(&(s[0].st_atime));
+	// printf("", );
+	char const *const str = ctime(&(s[1].st_mtime));
 	struct group const *g = getgrgid(s[0].st_gid);
 	struct passwd const *pw = getpwuid(s[0].st_uid);
 
@@ -78,13 +79,6 @@ t_entry		*init_long_entry(
 	ft_memcpy(new->entry_long->date, str + 4, 12);
 	new->entry_long->grp_name = ft_strdup(g->gr_name);
 	new->entry_long->username = ft_strdup(pw->pw_name);
-	if (*begin)
-	{
-		if (s[1].st_nlink > (*begin)->entry_long->biggest_nlink)
-			(*begin)->entry_long->biggest_nlink = s[1].st_nlink;
-		if (s[1].st_size > (*begin)->entry_long->biggest_size)
-			(*begin)->entry_long->biggest_size = s[1].st_size;
-	}
 	make_rights(new);
 	if ((new->mode & MODE_IS_SYM) &&
 	!readlink(new->fullname, new->entry_long->sym_name, __DARWIN_MAXNAMLEN))

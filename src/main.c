@@ -75,6 +75,6 @@ int				main(int ac, char **av)
 	if (init_sort_ptr(&ctx) == EXIT_FAILURE)
 		return (EXIT_FAILURE);
 	switch_make_entries(&ctx, ac > 1 && av[1] ? av[1] : ".");
-	while (1);
+	// while (1);
 	return (EXIT_SUCCESS);
 }

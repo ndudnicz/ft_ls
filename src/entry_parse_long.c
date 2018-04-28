@@ -1,5 +1,5 @@
 #include <stdlib.h>
-
+#include <time.h>//
 #include "entry.h"
 #include "libftasm.h"
 #include "libft.h"
@@ -19,22 +19,42 @@ static t_entry		*make_root_norme(t_var_box *vb)
 	char			*newpath;
 	struct stat 	s[2];
 	t_entry			*new;
-	// t_u8 const		options = vb->ctx->options;
 
 	newpath = NULL;
 	new = NULL;
 	if (!(newpath = ft_strjoin_free(ft_strjoin(vb->path, "/"),
 	vb->dp->d_name, 1, 0)))
-		return (pft_error(vb->exec_name, "", MALLOC_FAILED, NULL));
+	return (pft_error(vb->exec_name, "", MALLOC_FAILED, NULL));
 	stat(newpath, &s[0]);
 	lstat(newpath, &s[1]);
 	if (!(new = create_long_entry(vb->begin, s, vb->dp, newpath)))
-		return (pft_error(vb->exec_name, "", MALLOC_FAILED, NULL));
+	return (pft_error(vb->exec_name, "", MALLOC_FAILED, NULL));
 	if (push_sort_entry(vb->begin, &new, vb->ctx->sort_ptr)
 	== NULL)
-		return (pft_error(vb->exec_name, "", UNKNOWN_ERROR, NULL));
+	return (pft_error(vb->exec_name, "", UNKNOWN_ERROR, NULL));
 	free((void*)newpath);
 	return (new);
+}
+
+static void	set_sizes(
+	t_entry **begin,
+	t_entry *new
+)
+{
+	new->begin = *begin;
+	if (new->lstat.st_nlink > (*begin)->entry_long->sizes.biggest_nlink)
+	{
+		(*begin)->entry_long->sizes.biggest_nlink = new->lstat.st_nlink;
+		(*begin)->entry_long->sizes.biggest_nlink_len =
+		ft_numberlen(new->lstat.st_nlink, 10);
+	}
+	if (new->lstat.st_size > (*begin)->entry_long->sizes.biggest_size)
+	{
+		(*begin)->entry_long->sizes.biggest_size = new->lstat.st_size;
+		(*begin)->entry_long->sizes.biggest_size_len =
+		ft_numberlen(new->lstat.st_size, 10);
+	}
+	(*begin)->entry_long->total += new->lstat.st_blocks;
 }
 
 /*
@@ -50,6 +70,7 @@ static t_entry		*make_root(
 {
 	DIR				*dirp;
 	t_var_box		vb;
+	t_entry			*new; //
 
 	dirp = NULL;
 	vb.ctx = ctx;
@@ -57,16 +78,17 @@ static t_entry		*make_root(
 	vb.begin = begin;
 	vb.path = path;
 	if ((dirp = opendir(path)) == NULL)
-		return (pft_perror(exec_name, path, NULL));
+	return (pft_perror(exec_name, path, NULL));
 	while ((vb.dp = readdir(dirp)) != NULL)
 	{
 		if (!vb.dp)
-			return (pft_error(exec_name, "", READDIR_FAILED, NULL));
+		return (pft_error(exec_name, "", READDIR_FAILED, NULL));
 		if (!(!(ctx->options & OPT_DOT_FILES) && vb.dp->d_name[0] == '.' &&
 		vb.dp->d_name[1]))
 		{
-			if (!make_root_norme(&vb))
+			if (!(new = make_root_norme(&vb))) //
 				return (NULL);
+			set_sizes(vb.begin, new);
 		}
 	}
 	(void)closedir(dirp);
@@ -85,6 +107,12 @@ t_entry					*make_entries_long(
 	t_entry		*next;
 
 	make_root(ctx, ctx->exec_name, &begin, path);
+	if (begin->entry_long->total)
+	{
+		ft_putstr("total ");
+		ft_putuint64(begin->entry_long->total);
+		ft_putchar('\n');
+	}
 	display_root_entries_long(ctx->options, begin);
 	while (begin)
 	{
@@ -106,12 +134,20 @@ t_entry					*make_entries_recursive_long(
 )
 {
 	t_entry		*next;
+
 	make_root(ctx, ctx->exec_name, &begin, path);
+	if (begin && begin->entry_long && begin->entry_long->total)
+	{
+		ft_putstr("total ");
+		ft_putuint64(begin->entry_long->total);
+		ft_putchar('\n');
+	}
 	if (display_root_entries_long(ctx->options, begin))
 		return (NULL);
 	while (begin)
 	{
-		if (!(begin->mode & MODE_IS_SYM) && (begin->mode & MODE_IS_NODE) && !is_dot_double_dot(begin->name))
+		if (!(begin->mode & MODE_IS_SYM) && (begin->mode & MODE_IS_NODE) &&
+		!is_dot_double_dot(begin->name))
 		{
 			ft_putchar('\n');
 			ft_putstr(begin->fullname);
