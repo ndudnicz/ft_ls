@@ -11,6 +11,8 @@
 #include "entry_list_long.h"
 #include "entry_push_sort.h"
 
+#include <stdio.h>//
+
 /*
 ** thx 42 norme.
 */
@@ -37,11 +39,18 @@ static t_entry		*make_root_norme(t_var_box *vb)
 }
 
 static void	set_sizes(
+	t_context *ctx,
 	t_entry **begin,
 	t_entry *new
 )
 {
+	t_u64 const		usr_len = ft_strlen(new->entry_long->username);
+	t_u64 const		grp_len = ft_strlen(new->entry_long->grp_name);
+
 	new->begin = *begin;
+	// puts(new->name);
+	// if (!(ctx->options & OPT_DOT_FILES) && new->name[0] == '.')
+	// 	return ;
 	if (new->lstat.st_nlink > (*begin)->entry_long->sizes.biggest_nlink)
 	{
 		(*begin)->entry_long->sizes.biggest_nlink = new->lstat.st_nlink;
@@ -54,6 +63,10 @@ static void	set_sizes(
 		(*begin)->entry_long->sizes.biggest_size_len =
 		ft_numberlen(new->lstat.st_size, 10);
 	}
+	if (usr_len > (*begin)->entry_long->sizes.biggest_usr_len)
+		(*begin)->entry_long->sizes.biggest_usr_len = usr_len;
+	if (grp_len > (*begin)->entry_long->sizes.biggest_grp_len)
+		(*begin)->entry_long->sizes.biggest_grp_len = grp_len;
 	(*begin)->entry_long->total += new->lstat.st_blocks;
 }
 
@@ -82,13 +95,15 @@ static t_entry		*make_root(
 	while ((vb.dp = readdir(dirp)) != NULL)
 	{
 		if (!vb.dp)
-		return (pft_error(exec_name, "", READDIR_FAILED, NULL));
+			return (pft_error(exec_name, "", READDIR_FAILED, NULL));
 		if (!(!(ctx->options & OPT_DOT_FILES) && vb.dp->d_name[0] == '.' &&
 		vb.dp->d_name[1]))
 		{
-			if (!(new = make_root_norme(&vb))) //
+			if (!(new = make_root_norme(&vb)))
 				return (NULL);
-			set_sizes(vb.begin, new);
+
+			// if ((ctx->options & OPT_DOT_FILES) || new->name[0] != '.')
+				set_sizes(ctx, vb.begin, new);
 		}
 	}
 	(void)closedir(dirp);

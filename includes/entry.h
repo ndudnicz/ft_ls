@@ -15,6 +15,8 @@ typedef struct		s_sizes
 	t_u64	biggest_size_len;
 	t_u64	biggest_nlink;
 	t_u64	biggest_nlink_len;
+	t_u64	biggest_usr_len;
+	t_u64	biggest_grp_len;
 }					t_sizes;
 
 typedef struct		s_entry_long

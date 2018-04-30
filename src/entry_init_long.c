@@ -11,6 +11,7 @@
 #include "libft.h"
 #include "error.h"
 #include "entry_init.h"
+#include "options.h"
 
 static void	get_right(
 	t_u8 const p,
@@ -76,7 +77,15 @@ t_entry		*init_long_entry(
 	struct passwd const *pw = getpwuid(s[0].st_uid);
 
 	init_entry(begin, new, s);
-	ft_memcpy(new->entry_long->date, str + 4, 12);
+	if (ft_strstr(str, CURRENT_YEAR))
+		ft_memcpy(new->entry_long->date, str + 4, 12);
+	else
+	{
+		ft_memcpy(new->entry_long->date, str + 4, 7);
+		ft_memcpy(new->entry_long->date + 7, str + 19, 5);
+
+	}
+
 	new->entry_long->grp_name = ft_strdup(g->gr_name);
 	new->entry_long->username = ft_strdup(pw->pw_name);
 	make_rights(new);

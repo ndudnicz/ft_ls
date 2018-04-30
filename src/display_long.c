@@ -11,7 +11,7 @@
 
 static void	put_space(char *s, t_u64 len)
 {
-	while (len > 1)
+	while (len > 0)
 	{
 		ft_strcat(s, " ");
 		len--;
@@ -39,11 +39,12 @@ static int	format_line(
 	char **line
 )
 {
-	t_u64 const user_len = ft_strlen(entry->entry_long->username);
+	// t_u64 const user_len = ft_strlen(entry->entry_long->username);
 	t_u64 const grp_len = ft_strlen(entry->entry_long->grp_name);
 
-	if (!(*line = (char*)my_calloc(33 + entry->begin->entry_long->sizes.biggest_nlink_len + entry->begin->entry_long->sizes.biggest_size_len + user_len + grp_len + ft_strlen(entry->name) + 1 + (entry->mode & MODE_IS_SYM ? 4 + ft_strlen(entry->entry_long->sym_name) : 0))))
+	if (!(*line = (char*)my_calloc(33 + entry->begin->entry_long->sizes.biggest_nlink_len + entry->begin->entry_long->sizes.biggest_size_len + entry->begin->entry_long->sizes.biggest_grp_len + entry->begin->entry_long->sizes.biggest_usr_len + ft_strlen(entry->name) + 1 + (entry->mode & MODE_IS_SYM ? 4 + ft_strlen(entry->entry_long->sym_name) : 0))))
 		return (ft_error("", "format_line()", MALLOC_FAILED, 1));
+	// printf("->%d\n", 33 + entry->begin->entry_long->sizes.biggest_nlink_len + entry->begin->entry_long->sizes.biggest_size_len + user_len + entry->begin->entry_long->sizes.biggest_grp_len + ft_strlen(entry->name) + 1 + (entry->mode & MODE_IS_SYM ? 4 + ft_strlen(entry->entry_long->sym_name) : 0));
 	ft_strncpy(*line, entry->entry_long->rights, 10);
 	ft_strcat(*line, "  ");
 	put_space(*line, entry->begin->entry_long->sizes.biggest_nlink_len - ft_numberlen(entry->lstat.st_nlink, 10));
@@ -51,7 +52,9 @@ static int	format_line(
 	ft_strcat(*line, " "); // 1
 	ft_strcat(*line, entry->entry_long->username);
 	ft_strcat(*line, "  "); // 2
+	put_space(*line, entry->begin->entry_long->sizes.biggest_usr_len - ft_strlen(entry->entry_long->username));
 	ft_strcat(*line, entry->entry_long->grp_name);
+	put_space(*line, entry->begin->entry_long->sizes.biggest_grp_len - ft_strlen(entry->entry_long->grp_name));
 	ft_strcat(*line, "  "); // 2
 	put_space(*line, entry->begin->entry_long->sizes.biggest_size_len - ft_numberlen(entry->lstat.st_size, 10));
 	static_itoa(*line + ft_strlen(*line) + ft_numberlen(entry->lstat.st_size, 10) - 1, entry->lstat.st_size);
@@ -64,6 +67,7 @@ static int	format_line(
 		ft_strcat(*line, " -> ");
 		ft_strcat(*line, entry->entry_long->sym_name);
 	}
+	// printf("<-%d\n", ft_strlen(*line));
 	return (0);
 }
 
@@ -87,6 +91,7 @@ int			display_root_entries_long(
 		}
 		else
 		{
+			// printf("%lu\n", tmp->begin->entry_long->sizes.biggest_nlink_len);
 			if (format_line(tmp, &line))
 				return (1);
 			ft_puts(line);

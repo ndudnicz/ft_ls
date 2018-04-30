@@ -3,6 +3,8 @@
 
 # include "mystdint.h"
 
+# define CURRENT_YEAR			"2018"
+
 # define OPT_REVERSE			0x01
 # define OPT_SORT_TIME			0x02
 # define OPT_LONG_FORMAT		0x04
