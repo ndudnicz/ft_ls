@@ -1,6 +1,17 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   options.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ndudnicz <ndudnicz@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2018/05/01 12:40:34 by ndudnicz          #+#    #+#             */
+/*   Updated: 2018/05/01 12:40:36 by ndudnicz         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include <stdlib.h>
 
-// #include "entry.h"
 #include "error.h"
 #include "libftasm.h"
 #include "options.h"
@@ -9,6 +20,7 @@
 ** Moves NULLs argv to the end of the array. Options are set in config
 ** and doesn't exist anymore in argv.
 */
+
 static void	del_null_params(
 	int *ac,
 	char **av,
@@ -38,7 +50,7 @@ static void	del_null_params(
 	*ac -= offset;
 }
 
-static int		switch_set_options(
+static int	switch_set_options(
 	char const *exec_name,
 	char const *arg,
 	t_context *ctx
@@ -74,7 +86,7 @@ static int		switch_set_options(
 ** Parse argv and set argv[i] at NULL if an options was found.
 */
 
-int	get_options(
+int			get_options(
 	t_context *ctx,
 	int *ac,
 	char **av
@@ -95,31 +107,3 @@ int	get_options(
 	del_null_params(ac, av, n);
 	return (0);
 }
-
-/*
-** return 0 if ok, 1 and display an error msg if not ok
-*/
-
-// int	valid_options(
-// 	// char const *exec_name,
-// 	// t_context *ctx
-// )
-// {
-// 	return (0);
-// 	// if (options->st_key.key_size == KEY_LENGTH && (options->options & OPT_FILE)) {
-// 	// 	return 0;
-// 	// } else if (
-// 	// 	options->st_key.key_size != KEY_LENGTH &&
-// 	// 	((options->options & (OPT_GEN_KEY | OPT_FILE)) == (OPT_GEN_KEY | OPT_FILE))
-// 	// ) {
-// 	// 	return 0;
-// 	// } else {
-// 	// 	if (!(options->options & OPT_FILE)) {
-// 	// 		return ft_error(exec_name, "valid_options()", MISSING_INPUT_FILE, 1);
-// 	// 	} else if (options->st_key.key_size != KEY_LENGTH && !(options->options & OPT_GEN_KEY)) {
-// 	// 		return ft_error(exec_name, "valid_options()", INVALID_KEY_LENGTH, 1);
-// 	// 	} else {
-// 	// 		return ft_error(exec_name, "valid_options()", UNKNOWN_ERROR, 1);
-// 	// 	}
-// 	// }
-// }

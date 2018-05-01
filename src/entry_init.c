@@ -1,18 +1,23 @@
-#include <time.h>
-#include <stdlib.h>//
-#include <grp.h>
-#include <unistd.h>
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   entry_init.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ndudnicz <ndudnicz@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2018/05/01 12:39:21 by ndudnicz          #+#    #+#             */
+/*   Updated: 2018/05/01 12:39:23 by ndudnicz         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include "entry.h"
 #include "libftasm.h"
-#include "libft.h"
-#include "error.h"
 
 /*
 ** Init the new entry
 */
+
 t_entry		*init_entry(
-	t_entry **begin,
 	t_entry *new,
 	struct stat s[2]
 )

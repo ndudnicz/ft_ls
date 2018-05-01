@@ -1,10 +1,19 @@
-#include <stdlib.h>
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   display.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ndudnicz <ndudnicz@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2018/05/01 12:39:13 by ndudnicz          #+#    #+#             */
+/*   Updated: 2018/05/01 12:39:14 by ndudnicz         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include "entry.h"
 #include "libftasm.h"
-#include "libft.h"
-#include "misc.h"
 #include "mystdint.h"
+#include "options.h"
 
 int			display_root_entries(
 	t_u8 const options,

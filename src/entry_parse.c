@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   entry_parse.c                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ndudnicz <ndudnicz@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2018/05/01 12:39:45 by ndudnicz          #+#    #+#             */
+/*   Updated: 2018/05/01 12:39:46 by ndudnicz         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include <stdlib.h>
 
 #include "entry.h"
@@ -14,12 +26,12 @@
 /*
 ** thx 42 norme.
 */
+
 static t_entry		*make_root_norme(t_var_box *vb)
 {
 	char			*newpath;
-	struct stat 	s[2];
+	struct stat		s[2];
 	t_entry			*new;
-	// t_u8 const		options = vb->ctx->options;
 
 	newpath = NULL;
 	new = NULL;
@@ -28,7 +40,7 @@ static t_entry		*make_root_norme(t_var_box *vb)
 		return (pft_error(vb->exec_name, "", MALLOC_FAILED, NULL));
 	stat(newpath, &s[0]);
 	lstat(newpath, &s[1]);
-	if (!(new = create_entry(vb->begin, s, vb->dp, newpath)))
+	if (!(new = create_entry(s, vb->dp, newpath)))
 		return (pft_error(vb->exec_name, "", MALLOC_FAILED, NULL));
 	if (push_sort_entry(vb->begin, &new, vb->ctx->sort_ptr)
 	== NULL)
@@ -41,6 +53,7 @@ static t_entry		*make_root_norme(t_var_box *vb)
 ** Make entries of the given path
 ** t_var_box: thx 42 norme.
 */
+
 static t_entry		*make_root(
 	t_context *ctx,
 	char *exec_name,
@@ -76,7 +89,8 @@ static t_entry		*make_root(
 /*
 ** Make entries, starting at the given path
 */
-t_entry					*make_entries(
+
+t_entry				*make_entries(
 	t_context *ctx,
 	t_entry *begin,
 	char *path
@@ -98,7 +112,8 @@ t_entry					*make_entries(
 /*
 ** Make entries recursively, starting at the given path
 */
-t_entry					*make_entries_recursive(
+
+t_entry				*make_entries_recursive(
 	t_context *ctx,
 	t_entry *begin,
 	char *path

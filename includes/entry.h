@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   entry.h                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ndudnicz <ndudnicz@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2018/05/01 12:37:54 by ndudnicz          #+#    #+#             */
+/*   Updated: 2018/05/01 12:37:55 by ndudnicz         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef ENTRY_H
 # define ENTRY_H
 
@@ -22,10 +34,10 @@ typedef struct		s_sizes
 typedef struct		s_entry_long
 {
 	char	sym_name[__DARWIN_MAXNAMLEN];
-	char	rights[11];
 	t_sizes	sizes;
-	t_u64	total;
 	char	date[13];
+	char	rights[11];
+	t_u64	total;
 	char	*username; // malloc
 	char	*grp_name; // malloc
 }					t_entry_long;

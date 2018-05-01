@@ -1,8 +1,19 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   entry_push_sort.c                                  :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ndudnicz <ndudnicz@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2018/05/01 12:40:01 by ndudnicz          #+#    #+#             */
+/*   Updated: 2018/05/01 12:40:02 by ndudnicz         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include <stdlib.h>
 
 #include "entry.h"
 #include "mystdint.h"
-#include "libftasm.h"
 
 static t_entry	*insert_between(
 	t_entry **begin,
@@ -24,17 +35,14 @@ static t_entry	*insert_between(
 	{
 		(*next)->prev = *new;
 		(*new)->next = *next;
-		// if ((*new)->entry_long)
-			// ft_memcpy(&(*new)->entry_long->sizes, &(*next)->entry_long->sizes, sizeof(t_sizes));
 	}
-
 	return (*new);
 }
 
 static t_entry	*push_sort_entry_norme(
 	t_entry **begin,
 	t_entry **new,
-	t_s32	(*compare)(t_entry*, t_entry*)
+	t_s32 (*compare)(t_entry*, t_entry*)
 )
 {
 	t_entry		*tmp;
@@ -64,10 +72,10 @@ static t_entry	*push_sort_entry_norme(
 	return (*begin);
 }
 
-t_entry		*push_sort_entry(
+t_entry			*push_sort_entry(
 	t_entry **begin,
 	t_entry **new,
-	t_s32	(*compare)(t_entry*, t_entry*)
+	t_s32 (*compare)(t_entry*, t_entry*)
 )
 {
 	if (*begin == NULL)

@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   misc.h                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ndudnicz <ndudnicz@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2018/05/01 12:38:50 by ndudnicz          #+#    #+#             */
+/*   Updated: 2018/05/01 12:38:51 by ndudnicz         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef MISC_H
 # define MISC_H
 
@@ -28,5 +40,11 @@ t_entry	*set_names(
 );
 
 void	ft_putuint64(t_u64 n);
+
+void	print_3_strings(
+	char const *const s1,
+	char const *const s2,
+	char const *const s3
+);
 
 #endif

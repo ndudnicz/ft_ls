@@ -1,4 +1,17 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   main.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ndudnicz <ndudnicz@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2018/05/01 12:40:16 by ndudnicz          #+#    #+#             */
+/*   Updated: 2018/05/01 12:40:17 by ndudnicz         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include <stdlib.h>
+#include <time.h>
 
 #include "entry.h"
 #include "libftasm.h"
@@ -40,7 +53,6 @@ static t_s32	init_sort_ptr(t_context *ctx)
 	else
 		return (ft_error(ctx->exec_name, "init_sort_ptr()",
 		UNKNOWN_ERROR, EXIT_FAILURE));
-
 }
 
 static t_entry	*switch_make_entries(
@@ -64,9 +76,13 @@ static t_entry	*switch_make_entries(
 	}
 }
 
-int				main(int ac, char **av)
+int				main(
+	int ac,
+	char **av
+)
 {
 	t_context	ctx;
+	time_t		clock;
 
 	ft_memset((void*)&ctx, 0, sizeof(t_context));
 	if (get_options(&ctx, &ac, av))
@@ -74,7 +90,8 @@ int				main(int ac, char **av)
 	ctx.exec_name = av[0];
 	if (init_sort_ptr(&ctx) == EXIT_FAILURE)
 		return (EXIT_FAILURE);
+	if ((ctx.timestamp = time(&clock)) < 0)
+		return (EXIT_FAILURE);
 	switch_make_entries(&ctx, ac > 1 && av[1] ? av[1] : ".");
-	// while (1);
 	return (EXIT_SUCCESS);
 }
