@@ -24,16 +24,16 @@
 
 t_entry	*create_long_entry(
 	struct stat s[2],
-	struct dirent *dir,
-	char const *fullname
+	char const *const name,
+	char const *const fullname
 )
 {
 	t_entry		*new;
 	t_u64 const	size = sizeof(t_entry_long);
 
 	new = NULL;
-	if (!fullname || !dir || !(new = (t_entry*)my_calloc(sizeof(t_entry))) ||
-		!set_names(new, dir->d_name, fullname) ||
+	if (!fullname || !name || !(new = (t_entry*)my_calloc(sizeof(t_entry))) ||
+		!set_names(new, name, fullname) ||
 		!(new->entry_long = (t_entry_long*)my_calloc(size)) ||
 		!init_long_entry(new, s))
 		return (pft_error("Error", "create_entry()", MALLOC_FAILED, NULL));

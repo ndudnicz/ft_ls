@@ -24,16 +24,16 @@
 
 t_entry				*create_entry(
 	struct stat s[2],
-	struct dirent *dir,
-	char const *fullname
+	char const *const name,
+	char const *const fullname
 )
 {
 	t_entry		*new;
 
 	new = NULL;
-	if (!fullname || !dir || !(new = (t_entry*)my_calloc(sizeof(t_entry))) ||
+	if (!fullname || !name || !(new = (t_entry*)my_calloc(sizeof(t_entry))) ||
 		!init_entry(new, s) ||
-		!set_names(new, dir->d_name, fullname))
+		!set_names(new, name, fullname))
 		return (pft_error("Error", "create_entry()", MALLOC_FAILED, NULL));
 	else
 		return (new);

@@ -25,13 +25,21 @@ t_s32	args_compare_time_modified(
 
 	lstat((char*)a, &lstat_a);
 	lstat((char*)b, &lstat_b);
-	t = lstat_b.st_mtimespec.tv_sec - lstat_a.st_mtimespec.tv_sec;
-	if (t > 0)
+	if ((S_ISDIR(lstat_a.st_mode) && S_ISDIR(lstat_b.st_mode)) ||
+	(!S_ISDIR(lstat_a.st_mode) && !S_ISDIR(lstat_b.st_mode)))
+	{
+		t = lstat_b.st_mtimespec.tv_sec - lstat_a.st_mtimespec.tv_sec;
+		if (t > 0)
+			return (1);
+		else if (t < 0)
+			return (-1);
+		else
+			return (args_compare_lex_standard(a, b));
+	}
+	else if (S_ISDIR(lstat_a.st_mode))
 		return (1);
-	else if (t < 0)
-		return (-1);
 	else
-		return (args_compare_lex_standard(a, b));
+		return (-1);
 }
 
 t_s32	args_compare_time_modified_reverse(
@@ -45,11 +53,19 @@ t_s32	args_compare_time_modified_reverse(
 
 	lstat((char*)a, &lstat_a);
 	lstat((char*)b, &lstat_b);
-	t = lstat_a.st_mtimespec.tv_sec - lstat_b.st_mtimespec.tv_sec;
-	if (t > 0)
+	if ((S_ISDIR(lstat_a.st_mode) && S_ISDIR(lstat_b.st_mode)) ||
+	(!S_ISDIR(lstat_a.st_mode) && !S_ISDIR(lstat_b.st_mode)))
+	{
+		t = lstat_a.st_mtimespec.tv_sec - lstat_b.st_mtimespec.tv_sec;
+		if (t > 0)
+			return (1);
+		else if (t < 0)
+			return (-1);
+		else
+			return (args_compare_lex_reverse(a, b));
+	}
+	else if (S_ISDIR(lstat_a.st_mode))
 		return (1);
-	else if (t < 0)
-		return (-1);
 	else
-		return (args_compare_lex_standard(a, b));
+		return (-1);
 }

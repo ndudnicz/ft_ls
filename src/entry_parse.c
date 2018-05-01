@@ -23,10 +23,25 @@
 #include "entry_list.h"
 #include "entry_push_sort.h"
 
+static t_entry		*solo_file(
+	t_context *ctx,
+	char const *const path
+)
+{
+	t_entry	*new;
+	struct stat ls[2];
+
+	lstat(path, &ls[0]);
+	new = create_entry(ls, path, path);
+	display_root_entries(ctx->options, new);
+	free_entry(&new);
+	return (new);
+}
+
 /*
 ** thx 42 norme.
 */
-
+#include <stdio.h>
 static t_entry		*make_root_norme(t_var_box *vb)
 {
 	char			*newpath;
@@ -40,7 +55,7 @@ static t_entry		*make_root_norme(t_var_box *vb)
 		return (pft_error(vb->exec_name, "", MALLOC_FAILED, NULL));
 	stat(newpath, &s[0]);
 	lstat(newpath, &s[1]);
-	if (!(new = create_entry(s, vb->dp, newpath)))
+	if (!(new = create_entry(s, vb->dp->d_name, newpath)))
 		return (pft_error(vb->exec_name, "", MALLOC_FAILED, NULL));
 	if (push_sort_entry(vb->begin, &new, vb->ctx->sort_ptr)
 	== NULL)
@@ -54,6 +69,7 @@ static t_entry		*make_root_norme(t_var_box *vb)
 ** t_var_box: thx 42 norme.
 */
 
+#include <stdio.h>
 static t_entry		*make_root(
 	t_context *ctx,
 	char *exec_name,
@@ -70,20 +86,26 @@ static t_entry		*make_root(
 	vb.begin = begin;
 	vb.path = path;
 	if ((dirp = opendir(path)) == NULL)
-		return (pft_perror(exec_name, path, NULL));
-	while ((vb.dp = readdir(dirp)) != NULL)
 	{
-		if (!vb.dp)
-			return (pft_error(exec_name, "", READDIR_FAILED, NULL));
-		if (!(!(ctx->options & OPT_DOT_FILES) && vb.dp->d_name[0] == '.' &&
-		vb.dp->d_name[1]))
-		{
-			if (!make_root_norme(&vb))
-				return (NULL);
-		}
+		solo_file(ctx, path);
+		return (NULL);
 	}
-	(void)closedir(dirp);
-	return (*begin);
+	else
+	{
+		while ((vb.dp = readdir(dirp)) != NULL)
+		{
+			if (!vb.dp)
+				return (pft_error(exec_name, "", READDIR_FAILED, NULL));
+			if (!(!(ctx->options & OPT_DOT_FILES) && vb.dp->d_name[0] == '.' &&
+			vb.dp->d_name[1]))
+			{
+				if (!make_root_norme(&vb))
+					return (NULL);
+			}
+		}
+		(void)closedir(dirp);
+		return (*begin);
+	}
 }
 
 /*

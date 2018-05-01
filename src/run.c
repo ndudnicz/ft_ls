@@ -10,6 +10,8 @@
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <sys/stat.h>
+
 #include "mystdint.h"
 #include "libft.h"
 #include "libftasm.h"
@@ -69,24 +71,29 @@ void				run(
 	char **av
 )
 {
-	t_s32	i;
+	t_s32			i;
+	struct stat		ls;
+	t_s8			c;
 
 	i = 0;
-	if (ac > 1)
+	c = 0;
+	if (ac > 0)
 	{
 		sort_args(ctx, ac, av);
 		while (i < ac)
 		{
-			if (i > 0)
+			lstat(av[i], &ls);
+			if (i > 0 && i < ac + 1 && S_ISDIR(ls.st_mode))
 				ft_putchar('\n');
-			ft_putstr(av[i]);
-			ft_puts(":");
+			if (S_ISDIR(ls.st_mode))
+			{
+				ft_putstr(av[i]);
+				ft_puts(":");
+			}
 			switch_make_entries(ctx, av[i]);
 			i++;
 		}
 	}
 	else
-	{
 		switch_make_entries(ctx, ".");
-	}
 }

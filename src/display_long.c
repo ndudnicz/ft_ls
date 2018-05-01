@@ -19,6 +19,7 @@
 #include "mystdint.h"
 #include "error.h"
 
+#include <stdio.h>//
 static void	put_space(char *s, t_u64 len)
 {
 	while (len > 0)

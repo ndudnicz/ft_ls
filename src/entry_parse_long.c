@@ -24,33 +24,6 @@
 #include "entry_init_long.h"
 #include "entry_push_sort.h"
 
-/*
-** thx 42 norme.
-*/
-
-static t_entry		*make_root_norme(t_var_box *vb)
-{
-	char			*newpath;
-	struct stat		s[2];
-	t_entry			*new;
-
-	newpath = NULL;
-	new = NULL;
-	if (!(newpath = ft_strjoin_free(ft_strjoin(vb->path, "/"),
-	vb->dp->d_name, 1, 0)))
-		return (pft_error(vb->exec_name, "", MALLOC_FAILED, NULL));
-	stat(newpath, &s[0]);
-	lstat(newpath, &s[1]);
-	if (!(new = create_long_entry(s, vb->dp, newpath)))
-		return (pft_error(vb->exec_name, "", MALLOC_FAILED, NULL));
-	set_date(vb->ctx, new, &s[1]);
-	if (push_sort_entry(vb->begin, &new, vb->ctx->sort_ptr)
-	== NULL)
-		return (pft_error(vb->exec_name, "", UNKNOWN_ERROR, NULL));
-	free((void*)newpath);
-	return (new);
-}
-
 static void			set_sizes(
 	t_context *ctx,
 	t_entry **bgn,
@@ -83,6 +56,62 @@ static void			set_sizes(
 	(*bgn)->data->entry_long->total += new->lstat.st_blocks;
 }
 
+static t_entry		*solo_file(
+	t_context *ctx,
+	char const *const path
+)
+{
+	t_entry	*new;
+	struct stat ls[2];
+
+	stat(path, &ls[0]);
+	lstat(path, &ls[1]);
+	new = create_long_entry(ls, path, path);
+	set_date(ctx, new, &ls[1]);
+	new->data = new;
+	new->entry_long->sizes.biggest_nlink = new->lstat.st_nlink;
+	new->entry_long->sizes.biggest_nlink_len =
+	ft_numberlen(new->lstat.st_nlink, 10);
+	new->entry_long->sizes.biggest_size = new->lstat.st_size;
+	new->entry_long->sizes.biggest_size_len =
+	ft_numberlen(new->lstat.st_size, 10);
+	new->entry_long->sizes.biggest_usr_len =
+	ft_strlen(new->entry_long->username);
+	new->entry_long->sizes.biggest_grp_len =
+	ft_strlen(new->entry_long->grp_name);
+	display_root_entries_long(ctx->options, new);
+	free_entry_long(&new);
+	return (new);
+}
+
+/*
+** thx 42 norme.
+*/
+
+static t_entry		*make_root_norme(t_var_box *vb)
+{
+	char			*newpath;
+	struct stat		s[2];
+	t_entry			*new;
+
+	newpath = NULL;
+	new = NULL;
+	if (!(newpath = ft_strjoin_free(ft_strjoin(vb->path, "/"),
+	vb->dp->d_name, 1, 0)))
+		return (pft_error(vb->exec_name, "", MALLOC_FAILED, NULL));
+	stat(newpath, &s[0]);
+	lstat(newpath, &s[1]);
+	if (!(new = create_long_entry(s, vb->dp->d_name, newpath)))
+		return (pft_error(vb->exec_name, "", MALLOC_FAILED, NULL));
+	set_date(vb->ctx, new, &s[1]);
+	if (push_sort_entry(vb->begin, &new, vb->ctx->sort_ptr)
+	== NULL)
+		return (pft_error(vb->exec_name, "", UNKNOWN_ERROR, NULL));
+	free((void*)newpath);
+	return (new);
+}
+
+
 /*
 ** Make entries of the given path
 ** t_var_box: thx 42 norme.
@@ -105,21 +134,27 @@ static t_entry		*make_root(
 	vb.begin = begin;
 	vb.path = path;
 	if ((dirp = opendir(path)) == NULL)
-		return (pft_perror(exec_name, path, NULL));
-	while ((vb.dp = readdir(dirp)) != NULL)
 	{
-		if (!vb.dp)
-			return (pft_error(exec_name, "", READDIR_FAILED, NULL));
-		if (!(!(ctx->options & OPT_DOT_FILES) && vb.dp->d_name[0] == '.' &&
-		vb.dp->d_name[1]))
-		{
-			if (!(new = make_root_norme(&vb)))
-				return (NULL);
-			set_sizes(ctx, vb.begin, new);
-		}
+		solo_file(ctx, path);
+		return (NULL);
 	}
-	(void)closedir(dirp);
-	return (*begin);
+	else
+	{
+		while ((vb.dp = readdir(dirp)) != NULL)
+		{
+			if (!vb.dp)
+				return (pft_error(exec_name, "", READDIR_FAILED, NULL));
+			if (!(!(ctx->options & OPT_DOT_FILES) && vb.dp->d_name[0] == '.' &&
+			vb.dp->d_name[1]))
+			{
+				if (!(new = make_root_norme(&vb)))
+					return (NULL);
+				set_sizes(ctx, vb.begin, new);
+			}
+		}
+		(void)closedir(dirp);
+		return (*begin);
+	}
 }
 
 /*
