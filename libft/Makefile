@@ -12,7 +12,7 @@ ifeq ($(shell uname -s),Linux)
 		ft_putnbr_endl.c ft_strdupchr.c ft_strlenchr.c ft_strndup.c \
 		ft_itoa_base.c ft_putbase.c ft_include_int.c ft_atoi_base.c \
 		ft_putbase_uint64.c ft_strcpy.c ft_strdup.c ft_memccpy.c ft_ltoa.c \
-		ft_strjoin_free.c ft_array_length.c
+		ft_strjoin_free.c ft_array_length.c ft_qsort.c
 else
 	SRC := ft_putendl.c ft_putendl_fd.c ft_putnbr.c \
 		ft_strrchr.c ft_strdel.c \
@@ -25,7 +25,7 @@ else
 		ft_putnbr_endl.c ft_strdupchr.c ft_strlenchr.c ft_strndup.c \
 		ft_itoa_base.c ft_putbase.c ft_include_int.c ft_atoi_base.c \
 		ft_putbase_uint64.c ft_strcpy.c ft_memccpy.c ft_ltoa.c \
-		ft_strjoin_free.c ft_array_length.c ft_strdup.c
+		ft_strjoin_free.c ft_array_length.c ft_strdup.c ft_qsort.c
 endif
 CXX = gcc
 FLAGS = -Werror -Wextra -Wall

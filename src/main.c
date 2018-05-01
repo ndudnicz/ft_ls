@@ -15,12 +15,10 @@
 
 #include "entry.h"
 #include "libftasm.h"
-#include "display.h"
 #include "compare.h"
 #include "options.h"
-#include "entry_parse.h"
-#include "entry_parse_long.h"
 #include "error.h"
+#include "run.h"
 
 static t_s32	usage(t_s32 const ret)
 {
@@ -55,27 +53,6 @@ static t_s32	init_sort_ptr(t_context *ctx)
 		UNKNOWN_ERROR, EXIT_FAILURE));
 }
 
-static t_entry	*switch_make_entries(
-	t_context *ctx,
-	char *path
-)
-{
-	if (ctx->options & OPT_RECURSIVE)
-	{
-		if (ctx->options & OPT_LONG_FORMAT)
-			return (make_entries_recursive_long(ctx, NULL, path));
-		else
-			return (make_entries_recursive(ctx, NULL, path));
-	}
-	else
-	{
-		if (ctx->options & OPT_LONG_FORMAT)
-			return (make_entries_long(ctx, NULL, path));
-		else
-			return (make_entries(ctx, NULL, path));
-	}
-}
-
 int				main(
 	int ac,
 	char **av
@@ -92,6 +69,6 @@ int				main(
 		return (EXIT_FAILURE);
 	if ((ctx.timestamp = time(&clock)) < 0)
 		return (EXIT_FAILURE);
-	switch_make_entries(&ctx, ac > 1 && av[1] ? av[1] : ".");
+	run(&ctx, ac - 1, av + 1);
 	return (EXIT_SUCCESS);
 }

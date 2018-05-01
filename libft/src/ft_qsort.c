@@ -35,14 +35,14 @@ static int		partition(void **array, int start, int end,
 	j = start;
 	while (j < end)
 	{
-		if (compare(array[j], pivot))
+		if (compare(array[j], pivot) < 0)
 		{
 			i++;
 			swap(&array[i], &array[j]);
 		}
 		j++;
 	}
-	if (compare(array[end], array[i + 1]))
+	if (compare(array[end], array[i + 1]) < 0)
 		swap(&array[i + 1], &array[end]);
 	return (i + 1);
 }
