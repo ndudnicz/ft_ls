@@ -15,7 +15,6 @@
 
 # include "mystdint.h"
 
-// # define CURRENT_YEAR			"2018"
 # define TIME					15724800
 
 # define OPT_REVERSE			0x01

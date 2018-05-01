@@ -14,6 +14,7 @@
 
 #include "entry.h"
 #include "mystdint.h"
+#include "libftasm.h"
 
 static t_entry	*insert_between(
 	t_entry **begin,
@@ -22,6 +23,10 @@ static t_entry	*insert_between(
 	t_entry **next
 )
 {
+	if (*begin)
+	{
+		(*new)->data = (*begin)->data;
+	}
 	if (*prev)
 	{
 		(*prev)->next = *new;
@@ -46,7 +51,7 @@ static t_entry	*push_sort_entry_norme(
 )
 {
 	t_entry		*tmp;
-	int			cmp;
+	t_s32		cmp;
 
 	tmp = *begin;
 	while (tmp)
@@ -82,6 +87,7 @@ t_entry			*push_sort_entry(
 	{
 		*begin = *new;
 		(*new)->last = *new;
+		(*begin)->data = *new;
 		return (*new);
 	}
 	else

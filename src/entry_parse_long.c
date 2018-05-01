@@ -53,34 +53,34 @@ static t_entry		*make_root_norme(t_var_box *vb)
 
 static void			set_sizes(
 	t_context *ctx,
-	t_entry **begin,
+	t_entry **bgn,
 	t_entry *new
 )
 {
 	t_u64 const		usr_len = ft_strlen(new->entry_long->username);
 	t_u64 const		grp_len = ft_strlen(new->entry_long->grp_name);
 
-	new->begin = *begin;
+	new->data = (*bgn)->data;
 	if ((ctx->options & OPT_DOT_FILES) || new->name[0] != '.')
 	{
-		if (new->lstat.st_nlink > (*begin)->entry_long->sizes.biggest_nlink)
+		if (new->lstat.st_nlink > (*bgn)->data->entry_long->sizes.biggest_nlink)
 		{
-			(*begin)->entry_long->sizes.biggest_nlink = new->lstat.st_nlink;
-			(*begin)->entry_long->sizes.biggest_nlink_len =
+			(*bgn)->data->entry_long->sizes.biggest_nlink = new->lstat.st_nlink;
+			(*bgn)->data->entry_long->sizes.biggest_nlink_len =
 			ft_numberlen(new->lstat.st_nlink, 10);
 		}
-		if (new->lstat.st_size > (*begin)->entry_long->sizes.biggest_size)
+		if (new->lstat.st_size > (*bgn)->data->entry_long->sizes.biggest_size)
 		{
-			(*begin)->entry_long->sizes.biggest_size = new->lstat.st_size;
-			(*begin)->entry_long->sizes.biggest_size_len =
+			(*bgn)->data->entry_long->sizes.biggest_size = new->lstat.st_size;
+			(*bgn)->data->entry_long->sizes.biggest_size_len =
 			ft_numberlen(new->lstat.st_size, 10);
 		}
-		if (usr_len > (*begin)->entry_long->sizes.biggest_usr_len)
-			(*begin)->entry_long->sizes.biggest_usr_len = usr_len;
-		if (grp_len > (*begin)->entry_long->sizes.biggest_grp_len)
-			(*begin)->entry_long->sizes.biggest_grp_len = grp_len;
+		if (usr_len > (*bgn)->data->entry_long->sizes.biggest_usr_len)
+			(*bgn)->data->entry_long->sizes.biggest_usr_len = usr_len;
+		if (grp_len > (*bgn)->data->entry_long->sizes.biggest_grp_len)
+			(*bgn)->data->entry_long->sizes.biggest_grp_len = grp_len;
 	}
-	(*begin)->entry_long->total += new->lstat.st_blocks;
+	(*bgn)->data->entry_long->total += new->lstat.st_blocks;
 }
 
 /*
@@ -135,10 +135,10 @@ t_entry				*make_entries_long(
 	t_entry		*next;
 
 	make_root(ctx, ctx->exec_name, &begin, path);
-	if (begin->entry_long->total)
+	if (begin && ((ctx->options & OPT_DOT_FILES) || begin->next))
 	{
 		ft_putstr("total ");
-		ft_putuint64(begin->entry_long->total);
+		ft_putuint64(begin->data->entry_long->total);
 		ft_putchar('\n');
 	}
 	display_root_entries_long(ctx->options, begin);
@@ -168,7 +168,7 @@ t_entry				*make_entries_recursive_long(
 	if (begin && ((ctx->options & OPT_DOT_FILES) || begin->next))
 	{
 		ft_putstr("total ");
-		ft_putuint64(begin->entry_long->total);
+		ft_putuint64(begin->data->entry_long->total);
 		ft_putchar('\n');
 	}
 	if (display_root_entries_long(ctx->options, begin))

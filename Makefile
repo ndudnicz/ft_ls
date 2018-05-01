@@ -2,7 +2,7 @@ NAME = ft_ls
 
 CC = gcc
 
-FLAGS = -Wextra -Wall -O3 #-g -fsanitize=address #-Werror
+FLAGS = -Wextra -Wall #-Werror -O3 #-flto
 
 PATH_SRC = src
 
@@ -21,7 +21,6 @@ entry_init.c \
 entry_init_long.c \
 entry_parse.c \
 entry_parse_long.c \
-entry_push_back.c \
 entry_push_sort.c \
 compare_lex.c \
 compare_time.c \
