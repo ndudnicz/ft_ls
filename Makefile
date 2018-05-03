@@ -2,7 +2,7 @@ NAME = ft_ls
 
 CC = gcc
 
-FLAGS = -Wextra -Wall -Werror #-g -fsanitize=address -O3
+FLAGS = -Wextra -Wall -O2 -Werror #-g -fsanitize=address
 
 PATH_SRC = src
 
@@ -26,11 +26,13 @@ compare_lex.c \
 compare_time.c \
 display.c \
 display_long.c \
+display_long_format_line.c \
 misc.c \
 free.c \
 args_compare_lex.c \
 args_compare_time.c \
-run.c
+run.c \
+set_sizes.c
 
 OBJ = $(SRC:%.c=obj/%.o)
 
