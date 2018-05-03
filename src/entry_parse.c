@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include <stdlib.h>
+#include <errno.h>
 
 #include "entry.h"
 #include "libftasm.h"
@@ -28,20 +29,20 @@ static t_entry		*solo_file(
 	char const *const path
 )
 {
-	t_entry	*new;
-	struct stat ls[2];
+	t_entry		*new;
+	struct stat	ls[2];
 
 	lstat(path, &ls[0]);
 	new = create_entry(ls, path, path);
 	display_root_entries(ctx->options, new);
 	free_entry(&new);
-	return (new);
+	return (NULL);
 }
 
 /*
 ** thx 42 norme.
 */
-#include <stdio.h>
+
 static t_entry		*make_root_norme(t_var_box *vb)
 {
 	char			*newpath;
@@ -69,7 +70,6 @@ static t_entry		*make_root_norme(t_var_box *vb)
 ** t_var_box: thx 42 norme.
 */
 
-#include <stdio.h>
 static t_entry		*make_root(
 	t_context *ctx,
 	char *exec_name,
@@ -86,10 +86,8 @@ static t_entry		*make_root(
 	vb.begin = begin;
 	vb.path = path;
 	if ((dirp = opendir(path)) == NULL)
-	{
-		solo_file(ctx, path);
-		return (NULL);
-	}
+		return (errno && errno != 20 ? pft_perror(exec_name, path, NULL) :
+		solo_file(ctx, path));
 	else
 	{
 		while ((vb.dp = readdir(dirp)) != NULL)
@@ -97,11 +95,8 @@ static t_entry		*make_root(
 			if (!vb.dp)
 				return (pft_error(exec_name, "", READDIR_FAILED, NULL));
 			if (!(!(ctx->options & OPT_DOT_FILES) && vb.dp->d_name[0] == '.' &&
-			vb.dp->d_name[1]))
-			{
-				if (!make_root_norme(&vb))
-					return (NULL);
-			}
+			vb.dp->d_name[1]) && !make_root_norme(&vb))
+				return (NULL);
 		}
 		(void)closedir(dirp);
 		return (*begin);

@@ -25,7 +25,7 @@
 #include "entry_init.h"
 #include "options.h"
 
-static void	get_right(
+static void		get_right(
 	t_u8 const p,
 	t_u8 const r,
 	char *s)
@@ -46,7 +46,7 @@ static void	get_right(
 		s[0] = '-';
 }
 
-static char	get_type(struct stat *s)
+static char		get_type(struct stat *s)
 {
 	if (S_ISBLK(s->st_mode))
 		return ('b');
@@ -64,7 +64,7 @@ static char	get_type(struct stat *s)
 		return ('-');
 }
 
-static void	make_rights(t_entry *new)
+static void		make_rights(t_entry *new)
 {
 	new->entry_long->rights[0] = get_type(&new->lstat);
 	get_right(0, (new->lstat.st_mode & 07), new->entry_long->rights + 7);
@@ -72,9 +72,11 @@ static void	make_rights(t_entry *new)
 	(new->lstat.st_mode & 070) >> 3, new->entry_long->rights + 4);
 	get_right(((new->lstat.st_mode & 07000) >> 9) & 4,
 	(new->lstat.st_mode & 0700) >> 6, new->entry_long->rights + 1);
+	if (new->lstat.st_mode & 01000)
+		new->entry_long->rights[9] = 't';
 }
 
-t_s32		set_date(
+t_s32			set_date(
 	t_context *ctx,
 	t_entry *new,
 	struct stat *s
@@ -100,7 +102,7 @@ t_s32		set_date(
 ** Init the new entry, -l long format edition
 */
 
-t_entry		*init_long_entry(
+t_entry			*init_long_entry(
 	t_entry *new,
 	struct stat s[2]
 )
@@ -108,6 +110,8 @@ t_entry		*init_long_entry(
 	struct group const	*g = getgrgid(s[1].st_gid);
 	struct passwd const	*pw = getpwuid(s[1].st_uid);
 
+	if (!g || !pw)
+		return (NULL);
 	init_entry(new, s);
 	new->entry_long->grp_name = ft_strdup(g->gr_name);
 	new->entry_long->username = ft_strdup(pw->pw_name);

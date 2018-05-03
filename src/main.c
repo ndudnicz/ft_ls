@@ -70,6 +70,5 @@ int				main(
 	if ((ctx.timestamp = time(&clock)) < 0)
 		return (EXIT_FAILURE);
 	run(&ctx, ac - 1, av + 1);
-		// while (1);
 	return (EXIT_SUCCESS);
 }

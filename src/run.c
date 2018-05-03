@@ -85,7 +85,7 @@ void				run(
 			lstat(av[i], &ls);
 			if (i > 0 && i < ac + 1 && S_ISDIR(ls.st_mode))
 				ft_putchar('\n');
-			if (S_ISDIR(ls.st_mode))
+			if (ac > 1 && S_ISDIR(ls.st_mode))
 			{
 				ft_putstr(av[i]);
 				ft_puts(":");

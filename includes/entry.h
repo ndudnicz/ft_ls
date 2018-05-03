@@ -18,8 +18,12 @@
 
 # include "mystdint.h"
 
-# define MODE_IS_NODE		0x01
-# define MODE_IS_SYM		0x02
+# define MODE_IS_CHR		0x01
+# define MODE_IS_BLK		0x02
+# define MODE_IS_NODE		0x04
+# define MODE_IS_SYM		0x08
+
+# define MODE_SPEC_MASK		0x03
 
 typedef struct		s_sizes
 {
@@ -29,6 +33,8 @@ typedef struct		s_sizes
 	t_u64	biggest_nlink_len;
 	t_u64	biggest_usr_len;
 	t_u64	biggest_grp_len;
+	t_s32	biggest_major;
+	t_s32	biggest_major_len;
 }					t_sizes;
 
 typedef struct		s_entry_long
