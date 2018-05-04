@@ -24,6 +24,7 @@
 #include "error.h"
 #include "entry_init.h"
 #include "error.h"
+#include "free.h"
 
 static void		get_right(
 	t_u8 const p,
@@ -86,7 +87,10 @@ t_s32			set_date(
 	t_s64 const			diff = ctx->timestamp - s->st_mtime;
 
 	if (!str)
-		return (ft_perror(ctx, ctx->exec_name, UNKNOWN_ERROR, 1));
+	{
+		free_entry_long(&new);
+		return (ft_perror(ctx, ctx->exec_name, "", 1));
+	}
 	else if (diff && (diff > TIME || (diff * -1) > TIME))
 	{
 		ft_memcpy(new->entry_long->date, str + 4, 7);
@@ -114,7 +118,9 @@ t_entry			*init_long_entry(
 	struct passwd const	*pw = getpwuid(s[1].st_uid);
 
 	if (!g || !pw)
-		return (pft_perror(ctx, ctx->exec_name, UNKNOWN_ERROR, NULL));
+	{
+		return (pft_free_perror(ctx, new, NULL));
+	}
 	init_entry(new, s);
 	new->entry_long->grp_name = ft_strdup(g->gr_name);
 	new->entry_long->username = ft_strdup(pw->pw_name);
@@ -123,7 +129,7 @@ t_entry			*init_long_entry(
 	make_rights(new);
 	if ((new->mode & MODE_IS_SYM) &&
 	!readlink(new->fullname, new->entry_long->sym_name, __DARWIN_MAXNAMLEN))
-		return (pft_perror(ctx, "", "", NULL));
+		return (pft_free_perror(ctx, new, NULL));
 	else
 		return (new);
 }

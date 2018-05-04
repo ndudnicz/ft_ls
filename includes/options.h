@@ -14,6 +14,7 @@
 # define OPTIONS_H
 
 # include "mystdint.h"
+# include "entry.h"
 
 # define TIME					15724800
 
@@ -33,7 +34,6 @@
 
 # define PARAMS_STR				"lRart"
 
-typedef struct s_entry	t_entry;
 typedef t_s32			(*t_sort_ptr)(t_entry*, t_entry*);
 
 typedef struct	s_context

@@ -35,16 +35,16 @@ int		ft_perror(
 	char const *const s2,
 	int const ret
 );
-void	*pft_error(
-	char const *const s1,
-	char const *const s2,
-	char const *const s3,
-	void *ret
-);
-void	*pft_perror(
+
+// void	*pft_free_error(
+// 	t_context *ctx,
+// 	t_entry *entry,
+// 	void *ret
+// );
+
+void	*pft_free_perror(
 	t_context *ctx,
-	char const *const s1,
-	char const *const s2,
+	t_entry *entry,
 	void *ret
 );
 

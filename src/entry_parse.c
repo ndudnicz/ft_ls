@@ -33,7 +33,7 @@ static t_entry		*solo_file(
 	struct stat	ls[2];
 
 	lstat(path, &ls[0]);
-	new = create_entry(ls, path, path);
+	new = create_entry(ctx, ls, path, path);
 	display_root_entries(ctx->options, new);
 	free_entry(&new);
 	return (NULL);
@@ -53,14 +53,14 @@ static t_entry		*make_root_norme(t_var_box *vb)
 	new = NULL;
 	if (!(newpath = ft_strjoin_free(ft_strjoin(vb->path, "/"),
 	vb->dp->d_name, 1, 0)))
-		return (pft_error(vb->exec_name, "", MALLOC_FAILED, NULL));
+		return (pft_free_perror(vb->ctx, new, NULL));
 	stat(newpath, &s[0]);
 	lstat(newpath, &s[1]);
-	if (!(new = create_entry(s, vb->dp->d_name, newpath)))
-		return (pft_error(vb->exec_name, "", MALLOC_FAILED, NULL));
+	if (!(new = create_entry(vb->ctx, s, vb->dp->d_name, newpath)))
+		return (pft_free_perror(vb->ctx, new, NULL));
 	if (push_sort_entry(vb->begin, &new, vb->ctx->sort_ptr)
 	== NULL)
-		return (pft_error(vb->exec_name, "", UNKNOWN_ERROR, NULL));
+		return (pft_free_perror(vb->ctx, new, NULL));
 	free((void*)newpath);
 	return (new);
 }
@@ -86,14 +86,14 @@ static t_entry		*make_root(
 	vb.begin = begin;
 	vb.path = path;
 	if ((dirp = opendir(path)) == NULL)
-		return (errno && errno != 20 ? pft_perror(ctx, exec_name, path, NULL) :
+		return (errno && errno != 20 ? pft_free_perror(ctx, NULL, NULL) :
 		solo_file(ctx, path));
 	else
 	{
 		while ((vb.dp = readdir(dirp)) != NULL)
 		{
 			if (!vb.dp)
-				return (pft_error(exec_name, "", READDIR_FAILED, NULL));
+				return (pft_free_perror(ctx, NULL, NULL));
 			if (!(!(ctx->options & OPT_DOT_FILES) && vb.dp->d_name[0] == '.' &&
 			vb.dp->d_name[1]) && !make_root_norme(&vb))
 				return (NULL);

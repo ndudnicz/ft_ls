@@ -37,7 +37,7 @@ t_entry	*create_long_entry(
 		!set_names(new, name, fullname) ||
 		!(new->entry_long = (t_entry_long*)my_calloc(size)) ||
 		!init_long_entry(ctx, new, s))
-		return (pft_error("Error", "create_entry()", MALLOC_FAILED, NULL));
+		return (pft_free_perror(ctx, new, NULL));
 	else
 		return (new);
 }

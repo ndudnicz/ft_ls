@@ -23,6 +23,7 @@
 */
 
 t_entry				*create_entry(
+	t_context *ctx,
 	struct stat s[2],
 	char const *const name,
 	char const *const fullname
@@ -34,7 +35,7 @@ t_entry				*create_entry(
 	if (!fullname || !name || !(new = (t_entry*)my_calloc(sizeof(t_entry))) ||
 		!init_entry(new, s) ||
 		!set_names(new, name, fullname))
-		return (pft_error("Error", "create_entry()", MALLOC_FAILED, NULL));
+		return (pft_free_perror(ctx, new, NULL));
 	else
 		return (new);
 }
