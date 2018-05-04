@@ -51,13 +51,11 @@ static t_entry	*push_sort_entry_norme(
 )
 {
 	t_entry		*tmp;
-	t_s32		cmp;
 
 	tmp = *begin;
 	while (tmp)
 	{
-		cmp = compare(*new, tmp);
-		if (cmp < 0)
+		if (compare(*new, tmp) < 0)
 		{
 			return (insert_between(begin, &tmp->prev, new, &tmp));
 		}

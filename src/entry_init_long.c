@@ -23,7 +23,7 @@
 #include "libft.h"
 #include "error.h"
 #include "entry_init.h"
-#include "options.h"
+#include "error.h"
 
 static void		get_right(
 	t_u8 const p,
@@ -85,7 +85,9 @@ t_s32			set_date(
 	char const *const	str = ctime(&(s->st_mtime));
 	t_s64 const			diff = ctx->timestamp - s->st_mtime;
 
-	if (diff && (diff > TIME || (diff * -1) > TIME))
+	if (!str)
+		return (ft_perror(ctx, ctx->exec_name, UNKNOWN_ERROR, 1));
+	else if (diff && (diff > TIME || (diff * -1) > TIME))
 	{
 		ft_memcpy(new->entry_long->date, str + 4, 7);
 		ft_memcpy(new->entry_long->date + 7, str + 19, 5);
@@ -103,6 +105,7 @@ t_s32			set_date(
 */
 
 t_entry			*init_long_entry(
+	t_context *ctx,
 	t_entry *new,
 	struct stat s[2]
 )
@@ -111,7 +114,7 @@ t_entry			*init_long_entry(
 	struct passwd const	*pw = getpwuid(s[1].st_uid);
 
 	if (!g || !pw)
-		return (NULL);
+		return (pft_perror(ctx, ctx->exec_name, UNKNOWN_ERROR, NULL));
 	init_entry(new, s);
 	new->entry_long->grp_name = ft_strdup(g->gr_name);
 	new->entry_long->username = ft_strdup(pw->pw_name);
@@ -120,7 +123,7 @@ t_entry			*init_long_entry(
 	make_rights(new);
 	if ((new->mode & MODE_IS_SYM) &&
 	!readlink(new->fullname, new->entry_long->sym_name, __DARWIN_MAXNAMLEN))
-		return (pft_perror("", "", NULL));
+		return (pft_perror(ctx, "", "", NULL));
 	else
 		return (new);
 }

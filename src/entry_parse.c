@@ -86,7 +86,7 @@ static t_entry		*make_root(
 	vb.begin = begin;
 	vb.path = path;
 	if ((dirp = opendir(path)) == NULL)
-		return (errno && errno != 20 ? pft_perror(exec_name, path, NULL) :
+		return (errno && errno != 20 ? pft_perror(ctx, exec_name, path, NULL) :
 		solo_file(ctx, path));
 	else
 	{

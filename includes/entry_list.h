@@ -19,11 +19,4 @@ t_entry		*create_entry(
 	char const *const fullname
 );
 
-t_entry		*create_long_entry(
-	t_entry **begin,
-	struct stat s[2],
-	char const *const name,
-	char const *const fullname
-);
-
 #endif

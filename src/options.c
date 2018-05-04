@@ -14,7 +14,6 @@
 
 #include "error.h"
 #include "libftasm.h"
-#include "options.h"
 
 /*
 ** Moves NULLs argv to the end of the array. Options are set in config

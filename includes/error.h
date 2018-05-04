@@ -13,6 +13,8 @@
 #ifndef ERROR_H
 # define ERROR_H
 
+# include "options.h"
+
 # define MALLOC_FAILED "malloc() failed."
 # define UNKNOW_ARG "Unknown argument."
 # define INVALID_ARG "Invalid argument."
@@ -28,6 +30,7 @@ int		ft_error(
 	int const ret
 );
 int		ft_perror(
+	t_context *ctx,
 	char const *const s1,
 	char const *const s2,
 	int const ret
@@ -39,6 +42,7 @@ void	*pft_error(
 	void *ret
 );
 void	*pft_perror(
+	t_context *ctx,
 	char const *const s1,
 	char const *const s2,
 	void *ret

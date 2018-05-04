@@ -41,6 +41,7 @@ typedef struct	s_context
 	t_sort_ptr		sort_ptr;
 	t_s64			timestamp;
 	char			*exec_name;
+	t_s32			ret;
 	t_u8			options;
 }				t_context;
 

@@ -19,12 +19,26 @@
 #include "misc.h"
 #include "error.h"
 
-static void	put_space(char *s, t_u64 len)
+static void	put_space(
+	char *s,
+	t_s32 len
+)
 {
-	while (len > 0)
+	if (len & 1)
 	{
-		ft_strcat(s, " ");
-		len--;
+		while (len > 0)
+		{
+			ft_strcat(s, " ");
+			len--;
+		}
+	}
+	else
+	{
+		while (len > 0)
+		{
+			ft_strcat(s, "  ");
+			len -= 2;
+		}
 	}
 }
 

@@ -36,7 +36,7 @@ static t_entry		*solo_file(
 
 	stat(path, &ls[0]);
 	lstat(path, &ls[1]);
-	new = create_long_entry(ls, path, path);
+	new = create_long_entry(ctx, ls, path, path);
 	set_date(ctx, new, &ls[1]);
 	new->data = new;
 	new->entry_long->sizes.biggest_nlink = new->lstat.st_nlink;
@@ -71,7 +71,7 @@ static t_entry		*make_root_norme(t_var_box *vb)
 		return (pft_error(vb->exec_name, "", MALLOC_FAILED, NULL));
 	stat(newpath, &s[0]);
 	lstat(newpath, &s[1]);
-	if (!(new = create_long_entry(s, vb->dp->d_name, newpath)))
+	if (!(new = create_long_entry(vb->ctx, s, vb->dp->d_name, newpath)))
 		return (pft_error(vb->exec_name, "", MALLOC_FAILED, NULL));
 	set_date(vb->ctx, new, &s[1]);
 	if (push_sort_entry(vb->begin, &new, vb->ctx->sort_ptr)
@@ -104,7 +104,7 @@ static t_entry		*make_root(
 	vb.begin = begin;
 	vb.path = path;
 	if ((dirp = opendir(path)) == NULL)
-		return (errno && errno != 20 ? pft_perror(exec_name, path, NULL) :
+		return (errno && errno != 20 ? pft_perror(ctx, exec_name, path, NULL) :
 		solo_file(ctx, path));
 	else
 	{

@@ -16,6 +16,7 @@
 #include "libftasm.h"
 #include "libft.h"
 #include "mystdint.h"
+#include "options.h"
 
 t_s32	ft_error(
 	char const *const s1,
@@ -33,6 +34,7 @@ t_s32	ft_error(
 }
 
 t_s32	ft_perror(
+	t_context *ctx,
 	char const *const s1,
 	char const *const s2,
 	t_s32 const ret
@@ -47,6 +49,7 @@ t_s32	ft_perror(
 	}
 	else
 		perror(NULL);
+	ctx->ret = 1;
 	return (ret);
 }
 
@@ -66,6 +69,7 @@ void	*pft_error(
 }
 
 void	*pft_perror(
+	t_context *ctx,
 	char const *const s1,
 	char const *const s2,
 	void *ret
@@ -80,5 +84,6 @@ void	*pft_perror(
 	}
 	else
 		perror(NULL);
+	ctx->ret = 1;
 	return (ret);
 }
