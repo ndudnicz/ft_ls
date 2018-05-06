@@ -102,7 +102,7 @@ t_s32			set_date(
 	if (!str)
 	{
 		free_entry_long(&new);
-		return (ft_perror(ctx, ctx->exec_name, "", 1));
+		return (ft_free_perror(ctx, new, 1));
 	}
 	else if (diff && (diff > TIME || (diff * -1) > TIME))
 	{

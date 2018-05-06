@@ -17,11 +17,7 @@
 
 # define MALLOC_FAILED "malloc() failed."
 # define UNKNOW_ARG "Unknown argument."
-# define INVALID_ARG "Invalid argument."
-# define OPEN_FAILED "open() failed."
-# define READDIR_FAILED "readdir() failed."
 # define UNKNOWN_ERROR "Unknow error."
-# define TIME_FAILED "time() failed."
 
 int		ft_error(
 	char const *const s1,
@@ -29,23 +25,17 @@ int		ft_error(
 	char const *const s3,
 	int const ret
 );
-int		ft_perror(
-	t_context *ctx,
-	char const *const s1,
-	char const *const s2,
-	int const ret
-);
-
-// void	*pft_free_error(
-// 	t_context *ctx,
-// 	t_entry *entry,
-// 	void *ret
-// );
 
 void	*pft_free_perror(
 	t_context *ctx,
 	t_entry *entry,
 	void *ret
+);
+
+t_s32	ft_free_perror(
+	t_context *ctx,
+	t_entry *entry,
+	t_s32 ret
 );
 
 #endif
