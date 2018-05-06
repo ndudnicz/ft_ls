@@ -98,6 +98,12 @@ int			get_options(
 	n = 0;
 	while (i < *ac && av[i][0] == '-' && ft_strlen(av[i]) > 1)
 	{
+		if (!ft_strcmp("--", av[i]))
+		{
+			av[i] = NULL;
+			n++;
+			break ;
+		}
 		if (switch_set_options(av[0], av[i], ctx) < 0)
 			return (1);
 		n++;

@@ -14,7 +14,7 @@
 #include <stdlib.h>
 #include <grp.h>
 #include <unistd.h>
-#include <uuid/uuid.h>
+// #include <uuid/uuid.h>
 #include <pwd.h>
 #include <sys/types.h>
 
@@ -27,24 +27,25 @@
 #include "free.h"
 
 static void		get_right(
-	t_u8 const p,
 	t_u8 const r,
-	char *s)
+	char *s
+)
 {
-	if (p)
-		s[2] = 's';
-	else if (r & 1)
-		s[2] = 'x';
-	else
-		s[2] = '-';
-	if (r & 2)
-		s[1] = 'w';
-	else
-		s[1] = '-';
-	if (r & 4)
-		s[0] = 'r';
-	else
-		s[0] = '-';
+	s[2] = r & 1 ? 'x' : '-';
+	s[1] = r & 2 ? 'w' : '-';
+	s[0] = r & 4 ? 'r' : '-';
+	// if (r & 1)
+	// 	s[2] = 'x';
+	// else
+	// 	s[2] = '-';
+	// if (r & 2)
+	// 	s[1] = 'w';
+	// else
+	// 	s[1] = '-';
+	// if (r & 4)
+	// 	s[0] = 'r';
+	// else
+	// 	s[0] = '-';
 }
 
 static char		get_type(struct stat *s)
@@ -65,16 +66,28 @@ static char		get_type(struct stat *s)
 		return ('-');
 }
 
+/*
+** https://fr.wikipedia.org/wiki/Setuid
+** setuid 04000
+** setgid 02000
+*/
+
 static void		make_rights(t_entry *new)
 {
 	new->entry_long->rights[0] = get_type(&new->lstat);
-	get_right(0, (new->lstat.st_mode & 07), new->entry_long->rights + 7);
-	get_right(((new->lstat.st_mode & 07000) >> 9) & 2,
-	(new->lstat.st_mode & 070) >> 3, new->entry_long->rights + 4);
-	get_right(((new->lstat.st_mode & 07000) >> 9) & 4,
-	(new->lstat.st_mode & 0700) >> 6, new->entry_long->rights + 1);
+	get_right((new->lstat.st_mode & 07), new->entry_long->rights + 7);
+	get_right((new->lstat.st_mode & 070) >> 3, new->entry_long->rights + 4);
+	get_right((new->lstat.st_mode & 0700) >> 6, new->entry_long->rights + 1);
 	if (new->lstat.st_mode & 01000)
 		new->entry_long->rights[9] = 't';
+	if ((((new->lstat.st_mode & 06000) >> 9) & 4) && new->entry_long->rights[3] == '-')
+		new->entry_long->rights[3] = 'S';
+	if ((((new->lstat.st_mode & 06000) >> 9) & 2) && new->entry_long->rights[6] == '-')
+		new->entry_long->rights[6] = 'S';
+	if ((((new->lstat.st_mode & 06000) >> 9) & 4) && new->entry_long->rights[3] == 'x')
+		new->entry_long->rights[3] = 's';
+	if ((((new->lstat.st_mode & 06000) >> 9) & 2) && new->entry_long->rights[6] == 'x')
+		new->entry_long->rights[6] = 's';
 }
 
 t_s32			set_date(

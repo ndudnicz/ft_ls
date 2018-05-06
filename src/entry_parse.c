@@ -24,6 +24,7 @@
 #include "entry_list.h"
 #include "entry_push_sort.h"
 
+#include <stdio.h>//
 static t_entry		*solo_file(
 	t_context *ctx,
 	char const *const path
@@ -86,8 +87,12 @@ static t_entry		*make_root(
 	vb.begin = begin;
 	vb.path = path;
 	if ((dirp = opendir(path)) == NULL)
+	{
+	puts(path);
 		return (errno && errno != 20 ? pft_free_perror(ctx, NULL, NULL) :
 		solo_file(ctx, path));
+
+	}
 	else
 	{
 		while ((vb.dp = readdir(dirp)) != NULL)
@@ -106,7 +111,6 @@ static t_entry		*make_root(
 /*
 ** Make entries, starting at the given path
 */
-
 t_entry				*make_entries(
 	t_context *ctx,
 	t_entry *begin,

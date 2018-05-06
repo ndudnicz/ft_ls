@@ -19,7 +19,7 @@
 #include "options.h"
 #include "entry_parse.h"
 #include "entry_parse_long.h"
-
+#include <stdio.h>
 static void			sort_args(
 	t_context *ctx,
 	int ac,
@@ -73,10 +73,8 @@ void				run(
 {
 	t_s32			i;
 	struct stat		ls;
-	t_s8			c;
 
 	i = 0;
-	c = 0;
 	if (ac > 0)
 	{
 		sort_args(ctx, ac, av);
