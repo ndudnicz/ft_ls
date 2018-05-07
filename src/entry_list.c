@@ -33,9 +33,9 @@ t_entry				*create_entry(
 
 	new = NULL;
 	if (!fullname || !name || !(new = (t_entry*)my_calloc(sizeof(t_entry))) ||
-		!init_entry(new, s) ||
-		!set_names(new, name, fullname))
-		return (pft_free_perror(ctx, new, NULL));
+		!init_entry(&new, s) ||
+		!set_names(&new, name, fullname))
+		return (pft_free_perror(ctx, &new, name, NULL));
 	else
 		return (new);
 }

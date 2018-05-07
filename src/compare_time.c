@@ -19,8 +19,7 @@ t_s32	compare_time_modified(
 	t_entry *b
 )
 {
-	// t_s64 const	t = b->lstat.st_mtimespec.tv_sec - a->lstat.st_mtimespec.tv_sec;
-	t_s64 const	t = b->lstat.st_mtim.tv_sec - a->lstat.st_mtim.tv_sec;
+	t_s64 const	t = b->lstat.st_mtimespec.tv_sec - a->lstat.st_mtimespec.tv_sec;
 
 	if (t > 0)
 		return (1);
@@ -35,8 +34,7 @@ t_s32	compare_time_modified_reverse(
 	t_entry *b
 )
 {
-	// t_s64 const	t = a->lstat.st_mtimespec.tv_sec - b->lstat.st_mtimespec.tv_sec;
-	t_s64 const	t = a->lstat.st_mtim.tv_sec - b->lstat.st_mtim.tv_sec;
+	t_s64 const	t = a->lstat.st_mtimespec.tv_sec - b->lstat.st_mtimespec.tv_sec;
 
 	if (t > 0)
 		return (1);

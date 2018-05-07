@@ -34,10 +34,12 @@ t_entry	*create_long_entry(
 
 	new = NULL;
 	if (!fullname || !name || !(new = (t_entry*)my_calloc(sizeof(t_entry))) ||
-		!set_names(new, name, fullname) ||
-		!(new->entry_long = (t_entry_long*)my_calloc(size)) ||
-		!init_long_entry(ctx, new, s))
-		return (pft_free_perror(ctx, new, NULL));
+	!(new->entry_long = (t_entry_long*)my_calloc(size)))
+		return (NULL);
+	else if (!set_names(&new, name, fullname))
+		return (pft_free_perror(ctx, &new, name, NULL));
+	else if (!init_long_entry(ctx, &new, s))
+		return (NULL);
 	else
 		return (new);
 }

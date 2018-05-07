@@ -26,7 +26,6 @@ typedef struct	s_var_box
 	t_entry				**begin;
 	struct dirent		*dp;
 	char				*path;
-
 }				t_var_box;
 
 int				is_dot_double_dot(char const *const filename);
@@ -34,7 +33,7 @@ int				is_dot_double_dot(char const *const filename);
 void			*my_calloc(t_u64 const size);
 
 t_entry			*set_names(
-	t_entry *new,
+	t_entry **new,
 	char const *const name,
 	char const *const fullname
 );

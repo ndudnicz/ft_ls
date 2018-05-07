@@ -28,8 +28,7 @@ t_s32	args_compare_time_modified(
 	if ((S_ISDIR(lstat_a.st_mode) && S_ISDIR(lstat_b.st_mode)) ||
 	(!S_ISDIR(lstat_a.st_mode) && !S_ISDIR(lstat_b.st_mode)))
 	{
-		// t = lstat_b.st_mtimespec.tv_sec - lstat_a.st_mtimespec.tv_sec;
-		t = lstat_b.st_mtim.tv_sec - lstat_a.st_mtim.tv_sec;
+		t = lstat_b.st_mtimespec.tv_sec - lstat_a.st_mtimespec.tv_sec;
 		if (t > 0)
 			return (1);
 		else if (t < 0)
@@ -57,8 +56,7 @@ t_s32	args_compare_time_modified_reverse(
 	if ((S_ISDIR(lstat_a.st_mode) && S_ISDIR(lstat_b.st_mode)) ||
 	(!S_ISDIR(lstat_a.st_mode) && !S_ISDIR(lstat_b.st_mode)))
 	{
-		// t = lstat_a.st_mtimespec.tv_sec - lstat_b.st_mtimespec.tv_sec;
-		t = lstat_a.st_mtim.tv_sec - lstat_b.st_mtim.tv_sec;
+		t = lstat_a.st_mtimespec.tv_sec - lstat_b.st_mtimespec.tv_sec;
 		if (t > 0)
 			return (1);
 		else if (t < 0)

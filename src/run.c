@@ -19,7 +19,7 @@
 #include "options.h"
 #include "entry_parse.h"
 #include "entry_parse_long.h"
-#include <stdio.h>
+
 static void			sort_args(
 	t_context *ctx,
 	int ac,

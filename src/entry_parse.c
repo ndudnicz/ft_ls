@@ -24,7 +24,6 @@
 #include "entry_list.h"
 #include "entry_push_sort.h"
 
-#include <stdio.h>//
 static t_entry		*solo_file(
 	t_context *ctx,
 	char const *const path
@@ -54,14 +53,14 @@ static t_entry		*make_root_norme(t_var_box *vb)
 	new = NULL;
 	if (!(newpath = ft_strjoin_free(ft_strjoin(vb->path, "/"),
 	vb->dp->d_name, 1, 0)))
-		return (pft_free_perror(vb->ctx, new, NULL));
+		return (pft_free_perror(vb->ctx, &new, vb->path, NULL));
 	stat(newpath, &s[0]);
 	lstat(newpath, &s[1]);
 	if (!(new = create_entry(vb->ctx, s, vb->dp->d_name, newpath)))
-		return (pft_free_perror(vb->ctx, new, NULL));
+		return (pft_free_perror(vb->ctx, &new, vb->path, NULL));
 	if (push_sort_entry(vb->begin, &new, vb->ctx->sort_ptr)
 	== NULL)
-		return (pft_free_perror(vb->ctx, new, NULL));
+		return (pft_free_perror(vb->ctx, &new, vb->path, NULL));
 	free((void*)newpath);
 	return (new);
 }
@@ -87,21 +86,18 @@ static t_entry		*make_root(
 	vb.begin = begin;
 	vb.path = path;
 	if ((dirp = opendir(path)) == NULL)
-	{
-	puts(path);
-		return (errno && errno != 20 ? pft_free_perror(ctx, NULL, NULL) :
+		return (errno && errno != 20 ? pft_free_perror(ctx, NULL, path, NULL) :
 		solo_file(ctx, path));
-
-	}
 	else
 	{
 		while ((vb.dp = readdir(dirp)) != NULL)
 		{
-			if (!vb.dp)
-				return (pft_free_perror(ctx, NULL, NULL));
 			if (!(!(ctx->options & OPT_DOT_FILES) && vb.dp->d_name[0] == '.' &&
 			vb.dp->d_name[1]) && !make_root_norme(&vb))
+			{
+				(void)closedir(dirp);
 				return (NULL);
+			}
 		}
 		(void)closedir(dirp);
 		return (*begin);
@@ -111,6 +107,7 @@ static t_entry		*make_root(
 /*
 ** Make entries, starting at the given path
 */
+
 t_entry				*make_entries(
 	t_context *ctx,
 	t_entry *begin,

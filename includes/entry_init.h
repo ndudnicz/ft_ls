@@ -14,7 +14,7 @@
 # define ENTRY_INIT_H
 
 t_entry		*init_entry(
-	t_entry *new,
+	t_entry **new,
 	struct stat s[2]
 );
 

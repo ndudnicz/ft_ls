@@ -34,7 +34,7 @@ int			display_root_entries_long(
 	tmp = begin;
 	while (tmp)
 	{
-		if (!(options & OPT_DOT_FILES) && tmp->name && tmp->name[0] == '.')
+		if (!(options & OPT_DOT_FILES) && tmp->name[0] == '.')
 		{
 			next = tmp->next;
 			tmp = next;

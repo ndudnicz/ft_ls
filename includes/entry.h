@@ -17,7 +17,7 @@
 # include <dirent.h>
 
 # include "mystdint.h"
-# define __DARWIN_MAXNAMLEN 1024 //
+
 # define MODE_IS_CHR		0x01
 # define MODE_IS_BLK		0x02
 # define MODE_IS_NODE		0x04
@@ -33,13 +33,13 @@ typedef struct		s_sizes
 	t_u64	biggest_nlink_len;
 	t_u64	biggest_usr_len;
 	t_u64	biggest_grp_len;
-	t_u32	biggest_major;
-	t_u32	biggest_major_len;
+	t_s32	biggest_major;
+	t_s32	biggest_major_len;
 }					t_sizes;
 
 typedef struct		s_entry_long
 {
-	char	sym_name[__DARWIN_MAXNAMLEN];
+	char	sym_name[__DARWIN_MAXNAMLEN + 1];
 	t_sizes	sizes;
 	char	date[13];
 	char	rights[11];
@@ -58,7 +58,7 @@ typedef struct		s_entry
 	struct s_entry	*last;
 	struct s_entry	*node;
 	t_entry_long	*entry_long;
-	char			*name;
+	char			name[__DARWIN_MAXNAMLEN + 1];
 	char			*fullname;
 	char			mode;
 }					t_entry;

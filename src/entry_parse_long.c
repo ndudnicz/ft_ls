@@ -37,7 +37,8 @@ static t_entry		*solo_file(
 	stat(path, &ls[0]);
 	lstat(path, &ls[1]);
 	new = create_long_entry(ctx, ls, path, path);
-	set_date(ctx, new, &ls[1]);
+	if (set_date(ctx, &new, &ls[1]))
+		return (NULL);
 	new->data = new;
 	new->entry_long->sizes.biggest_nlink = new->lstat.st_nlink;
 	new->entry_long->sizes.biggest_nlink_len =
@@ -68,15 +69,17 @@ static t_entry		*make_root_norme(t_var_box *vb)
 	new = NULL;
 	if (!(newpath = ft_strjoin_free(ft_strjoin(vb->path, "/"),
 	vb->dp->d_name, 1, 0)))
-		return (pft_free_perror(vb->ctx, new, NULL));
+		return (pft_free_perror(vb->ctx, &new, vb->path, NULL));
 	stat(newpath, &s[0]);
 	lstat(newpath, &s[1]);
 	if (!(new = create_long_entry(vb->ctx, s, vb->dp->d_name, newpath)))
-		return (pft_free_perror(vb->ctx, new, NULL));
-	set_date(vb->ctx, new, &s[1]);
-	if (push_sort_entry(vb->begin, &new, vb->ctx->sort_ptr)
-	== NULL)
-		return (pft_free_perror(vb->ctx, new, NULL));
+	{
+		free((void*)newpath);
+		return (NULL);
+	}
+	set_date(vb->ctx, &new, &s[1]);
+	if (push_sort_entry(vb->begin, &new, vb->ctx->sort_ptr) == NULL)
+		return (pft_free_perror(vb->ctx, &new, vb->path, NULL));
 	free((void*)newpath);
 	set_sizes(vb->ctx, vb->begin, new);
 	return (new);
@@ -104,20 +107,21 @@ static t_entry		*make_root(
 	vb.exec_name = exec_name;
 	vb.begin = begin;
 	vb.path = path;
-	if ((dirp = opendir(path)) == NULL)
-		return (errno && errno != 20 ? pft_free_perror(ctx, NULL, NULL) :
-		solo_file(ctx, path));
-	else
+	if ((dirp = opendir(path)) == NULL && errno && errno != 20)
+		return (pft_free_perror(ctx, &new, path, NULL));
+	else if (dirp == NULL)
+		return (solo_file(ctx, path));
+	while ((vb.dp = readdir(dirp)) != NULL)
 	{
-		while ((vb.dp = readdir(dirp)) != NULL)
+		if (!(!(ctx->options & OPT_DOT_FILES) && vb.dp->d_name[0] == '.' &&
+		vb.dp->d_name[1]) && !(new = make_root_norme(&vb)))
 		{
-			if (!(!(ctx->options & OPT_DOT_FILES) && vb.dp->d_name[0] == '.' &&
-			vb.dp->d_name[1]) && !(new = make_root_norme(&vb)))
-				return (NULL);
+			(void)closedir(dirp);
+			return (NULL);
 		}
-		(void)closedir(dirp);
-		return (*begin);
 	}
+	(void)closedir(dirp);
+	return (*begin);
 }
 
 /*

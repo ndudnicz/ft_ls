@@ -28,13 +28,15 @@ int		ft_error(
 
 void	*pft_free_perror(
 	t_context *ctx,
-	t_entry *entry,
+	t_entry **entry,
+	char const *const path,
 	void *ret
 );
 
 t_s32	ft_free_perror(
 	t_context *ctx,
-	t_entry *entry,
+	t_entry **entry,
+	char const *const path,
 	t_s32 ret
 );
 

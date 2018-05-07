@@ -51,7 +51,7 @@ static t_s32	init_sort_ptr(t_context *ctx)
 		return (ft_error(ctx->exec_name, "init_sort_ptr()",
 		UNKNOWN_ERROR, EXIT_FAILURE));
 }
-#include <stdio.h>
+
 int				main(
 	int ac,
 	char **av
@@ -68,7 +68,6 @@ int				main(
 		return (EXIT_FAILURE);
 	if ((ctx.timestamp = time(&clock)) < 0)
 		return (EXIT_FAILURE);
-	// run(&ctx, ac - 1, av + 1);
 	run(&ctx, ac - 1, av + 1);
 	return (ctx.ret);
 }

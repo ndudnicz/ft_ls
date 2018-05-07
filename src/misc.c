@@ -33,17 +33,20 @@ void	*my_calloc(t_u64 const size)
 */
 
 t_entry	*set_names(
-	t_entry *new,
+	t_entry **new,
 	char const *const name,
 	char const *const fullname
 )
 {
-	if (!new || !name || !fullname || !(new->name = ft_strdup(name)) ||
-	!(new->fullname = ft_strdup(fullname && ft_strstr(fullname, "//") ==
+	if (!new || !*new || !name || !fullname ||
+	!((*new)->fullname = ft_strdup(fullname && ft_strstr(fullname, "//") ==
 	fullname ? fullname + 1 : fullname)))
 		return (NULL);
 	else
-		return (new);
+	{
+		ft_memcpy((*new)->name, name, ft_strlen(name));
+		return (*new);
+	}
 }
 
 void	ft_putuint64(t_u64 n)

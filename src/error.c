@@ -36,58 +36,68 @@ t_s32	ft_error(
 
 void	*pft_free_perror(
 	t_context *ctx,
-	t_entry *entry,
+	t_entry **entry,
+	char const *const path,
 	void *ret
 )
 {
 	char	*err;
 
-	err = entry ? ft_strjoin_free(ft_strjoin(ctx->exec_name, ": "),
-	entry->name, 1, 0) : ctx->exec_name;
+	if (entry && *entry)
+		err = ft_strjoin_free(ft_strjoin(ctx->exec_name, ": "),
+		(*entry)->name, 1, 0);
+	else if (path)
+		err = ft_strjoin_free(ft_strjoin(ctx->exec_name, ": "), path, 1, 0);
+	else
+		err = ft_strdup(ctx->exec_name);
 	if (err)
 	{
 		perror(err);
-		if (entry)
-			free((void*)err);
+		free((void*)err);
 	}
 	else
 		perror(NULL);
 	ctx->ret = 1;
-	if (entry)
+	if (entry && *entry)
 	{
-		if (entry->entry_long)
-			free_entry_long(&entry);
+		if ((*entry)->entry_long)
+			free_entry_long(entry);
 		else
-			free_entry(&entry);
+			free_entry(entry);
 	}
 	return (ret);
 }
 
 t_s32	ft_free_perror(
 	t_context *ctx,
-	t_entry *entry,
+	t_entry **entry,
+	char const *const path,
 	t_s32 ret
 )
 {
 	char	*err;
 
-	err = entry ? ft_strjoin_free(ft_strjoin(ctx->exec_name, ": "),
-	entry->name, 1, 0) : ctx->exec_name;
+	if (entry && *entry)
+		err = ft_strjoin_free(ft_strjoin(ctx->exec_name, ": "),
+		(*entry)->name, 1, 0);
+	else if (path)
+		err = ft_strjoin_free(ft_strjoin(ctx->exec_name, ": "), path, 1, 0);
+	else
+		err = ft_strdup(ctx->exec_name);
 	if (err)
 	{
 		perror(err);
-		if (entry)
-			free((void*)err);
+		free((void*)err);
 	}
 	else
 		perror(NULL);
 	ctx->ret = 1;
-	if (entry)
+	if (entry && *entry)
 	{
-		if (entry->entry_long)
-			free_entry_long(&entry);
+		if ((*entry)->entry_long)
+			free_entry_long(entry);
 		else
-			free_entry(&entry);
+			free_entry(entry);
 	}
 	return (ret);
 }

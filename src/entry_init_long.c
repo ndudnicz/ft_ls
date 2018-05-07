@@ -14,7 +14,6 @@
 #include <stdlib.h>
 #include <grp.h>
 #include <unistd.h>
-// #include <uuid/uuid.h>
 #include <pwd.h>
 #include <sys/types.h>
 
@@ -34,18 +33,6 @@ static void		get_right(
 	s[2] = r & 1 ? 'x' : '-';
 	s[1] = r & 2 ? 'w' : '-';
 	s[0] = r & 4 ? 'r' : '-';
-	// if (r & 1)
-	// 	s[2] = 'x';
-	// else
-	// 	s[2] = '-';
-	// if (r & 2)
-	// 	s[1] = 'w';
-	// else
-	// 	s[1] = '-';
-	// if (r & 4)
-	// 	s[0] = 'r';
-	// else
-	// 	s[0] = '-';
 }
 
 static char		get_type(struct stat *s)
@@ -80,19 +67,23 @@ static void		make_rights(t_entry *new)
 	get_right((new->lstat.st_mode & 0700) >> 6, new->entry_long->rights + 1);
 	if (new->lstat.st_mode & 01000)
 		new->entry_long->rights[9] = 't';
-	if ((((new->lstat.st_mode & 06000) >> 9) & 4) && new->entry_long->rights[3] == '-')
+	if ((((new->lstat.st_mode & 06000) >> 9) & 4) &&
+	new->entry_long->rights[3] == '-')
 		new->entry_long->rights[3] = 'S';
-	if ((((new->lstat.st_mode & 06000) >> 9) & 2) && new->entry_long->rights[6] == '-')
+	if ((((new->lstat.st_mode & 06000) >> 9) & 2) &&
+	new->entry_long->rights[6] == '-')
 		new->entry_long->rights[6] = 'S';
-	if ((((new->lstat.st_mode & 06000) >> 9) & 4) && new->entry_long->rights[3] == 'x')
+	if ((((new->lstat.st_mode & 06000) >> 9) & 4) &&
+	new->entry_long->rights[3] == 'x')
 		new->entry_long->rights[3] = 's';
-	if ((((new->lstat.st_mode & 06000) >> 9) & 2) && new->entry_long->rights[6] == 'x')
+	if ((((new->lstat.st_mode & 06000) >> 9) & 2) &&
+	new->entry_long->rights[6] == 'x')
 		new->entry_long->rights[6] = 's';
 }
 
 t_s32			set_date(
 	t_context *ctx,
-	t_entry *new,
+	t_entry **new,
 	struct stat *s
 )
 {
@@ -100,19 +91,16 @@ t_s32			set_date(
 	t_s64 const			diff = ctx->timestamp - s->st_mtime;
 
 	if (!str)
-	{
-		free_entry_long(&new);
-		return (ft_free_perror(ctx, new, 1));
-	}
+		return (ft_free_perror(ctx, new, NULL, 1));
 	else if (diff && (diff > TIME || (diff * -1) > TIME))
 	{
-		ft_memcpy(new->entry_long->date, str + 4, 7);
-		ft_memcpy(new->entry_long->date + 7, str + 19, 5);
+		ft_memcpy((*new)->entry_long->date, str + 4, 7);
+		ft_memcpy((*new)->entry_long->date + 7, str + 19, 5);
 		return (0);
 	}
 	else
 	{
-		ft_memcpy(new->entry_long->date, str + 4, 12);
+		ft_memcpy((*new)->entry_long->date, str + 4, 12);
 		return (0);
 	}
 }
@@ -123,7 +111,7 @@ t_s32			set_date(
 
 t_entry			*init_long_entry(
 	t_context *ctx,
-	t_entry *new,
+	t_entry **new,
 	struct stat s[2]
 )
 {
@@ -131,18 +119,17 @@ t_entry			*init_long_entry(
 	struct passwd const	*pw = getpwuid(s[1].st_uid);
 
 	if (!g || !pw)
-	{
-		return (pft_free_perror(ctx, new, NULL));
-	}
+		return (pft_free_perror(ctx, new, NULL, NULL));
 	init_entry(new, s);
-	new->entry_long->grp_name = ft_strdup(g->gr_name);
-	new->entry_long->username = ft_strdup(pw->pw_name);
-	new->entry_long->sizes.biggest_size_len = 1;
-	new->entry_long->sizes.biggest_nlink_len = 1;
-	make_rights(new);
-	if ((new->mode & MODE_IS_SYM) &&
-	!readlink(new->fullname, new->entry_long->sym_name, __DARWIN_MAXNAMLEN))
-		return (pft_free_perror(ctx, new, NULL));
+	(*new)->entry_long->grp_name = ft_strdup(g->gr_name);
+	(*new)->entry_long->username = ft_strdup(pw->pw_name);
+	(*new)->entry_long->sizes.biggest_size_len = 1;
+	(*new)->entry_long->sizes.biggest_nlink_len = 1;
+	make_rights(*new);
+	if (((*new)->mode & MODE_IS_SYM) &&
+	!readlink((*new)->fullname, (*new)->entry_long->sym_name,
+	__DARWIN_MAXNAMLEN))
+		return (pft_free_perror(ctx, new, NULL, NULL));
 	else
-		return (new);
+		return (*new);
 }

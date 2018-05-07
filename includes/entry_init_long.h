@@ -17,13 +17,13 @@
 
 t_entry		*init_long_entry(
 	t_context *ctx,
-	t_entry *new,
+	t_entry **new,
 	struct stat s[2]
 );
 
 t_s32		set_date(
 	t_context *ctx,
-	t_entry *new,
+	t_entry **new,
 	struct stat *s
 );
 
