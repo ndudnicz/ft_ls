@@ -28,7 +28,7 @@ else
 		ft_strjoin_free.c ft_array_length.c ft_strdup.c ft_qsort.c
 endif
 CXX = gcc
-FLAGS = -Werror -Wextra -Wall
+FLAGS = -Werror -Wextra -Wall -std=c89 -O3
 SRC_DIR = src
 OBJ_DIR = obj
 OBJ = $(SRC:%.c=obj/%.o)

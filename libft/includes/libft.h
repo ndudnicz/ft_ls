@@ -27,8 +27,11 @@ char		*ft_strncat(char *s1, const char *s2, size_t n);
 char		*ft_strrchr(const char *s, int c);
 char		*ft_strstr(const char *s1, const char *s2);
 char		*ft_strnstr(const char *s1, const char *s2, size_t n);
-int			ft_strncmp(const char *s1, const char *s2, size_t n);
-
+int			ft_strncmp(
+	register const char *s1,
+	register const char *s2,
+	register size_t n
+);
 void		*ft_memalloc(size_t size);
 void		ft_memdel(void **ap);
 char		*ft_strnew(size_t size);

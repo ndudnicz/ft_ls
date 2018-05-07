@@ -26,21 +26,20 @@ static void			sort_args(
 	char **av
 )
 {
-	if ((ctx->options & SORT_MASK) == 0)
+	if (ctx->options & OPT_SORT_TIME)
 	{
-		ft_qsort((void**)av, 0, ac - 1, &args_compare_lex_standard);
+		if (ctx->options & OPT_REVERSE)
+			ft_qsort((void**)av, 0, ac - 1,
+			&args_compare_time_modified_reverse);
+		else
+			ft_qsort((void**)av, 0, ac - 1, &args_compare_time_modified);
 	}
-	else if ((ctx->options & SORT_MASK) == OPT_REVERSE)
+	else
 	{
-		ft_qsort((void**)av, 0, ac - 1, &args_compare_lex_reverse);
-	}
-	else if ((ctx->options & SORT_MASK) == OPT_SORT_TIME)
-	{
-		ft_qsort((void**)av, 0, ac - 1, &args_compare_time_modified);
-	}
-	else if ((ctx->options & SORT_MASK) == OPT_REVERSE + OPT_SORT_TIME)
-	{
-		ft_qsort((void**)av, 0, ac - 1, &args_compare_time_modified_reverse);
+		if (ctx->options & OPT_REVERSE)
+			ft_qsort((void**)av, 0, ac - 1, &args_compare_lex_reverse);
+		else
+			ft_qsort((void**)av, 0, ac - 1, &args_compare_lex_standard);
 	}
 }
 

@@ -17,10 +17,10 @@
 #include "libftasm.h"
 
 static t_entry	*insert_between(
-	t_entry **begin,
-	t_entry **prev,
-	t_entry **new,
-	t_entry **next
+	register t_entry **begin,
+	register t_entry **prev,
+	register t_entry **new,
+	register t_entry **next
 )
 {
 	if (*begin)
@@ -45,8 +45,8 @@ static t_entry	*insert_between(
 }
 
 static t_entry	*push_sort_entry_norme(
-	t_entry **begin,
-	t_entry **new,
+	register t_entry **begin,
+	register t_entry **new,
 	t_s32 (*compare)(t_entry*, t_entry*)
 )
 {
@@ -56,9 +56,7 @@ static t_entry	*push_sort_entry_norme(
 	while (tmp)
 	{
 		if (compare(*new, tmp) < 0)
-		{
 			return (insert_between(begin, &tmp->prev, new, &tmp));
-		}
 		else
 		{
 			if (tmp->next)

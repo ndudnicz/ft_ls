@@ -27,29 +27,21 @@ static t_s32	usage(t_s32 const ret)
 
 static t_s32	init_sort_ptr(t_context *ctx)
 {
-	if ((ctx->options & SORT_MASK) == 0)
+	if (ctx->options & OPT_SORT_TIME)
 	{
-		ctx->sort_ptr = &compare_lex_standard;
-		return (EXIT_SUCCESS);
-	}
-	else if ((ctx->options & SORT_MASK) == OPT_REVERSE)
-	{
-		ctx->sort_ptr = &compare_lex_reverse;
-		return (EXIT_SUCCESS);
-	}
-	else if ((ctx->options & SORT_MASK) == OPT_SORT_TIME)
-	{
-		ctx->sort_ptr = &compare_time_modified;
-		return (EXIT_SUCCESS);
-	}
-	else if ((ctx->options & SORT_MASK) == OPT_REVERSE + OPT_SORT_TIME)
-	{
-		ctx->sort_ptr = &compare_time_modified_reverse;
-		return (EXIT_SUCCESS);
+		if (ctx->options & OPT_REVERSE)
+			ctx->sort_ptr = &compare_time_modified_reverse;
+		else
+			ctx->sort_ptr = &compare_time_modified;
 	}
 	else
-		return (ft_error(ctx->exec_name, "init_sort_ptr()",
-		UNKNOWN_ERROR, EXIT_FAILURE));
+	{
+		if (ctx->options & OPT_REVERSE)
+			ctx->sort_ptr = &compare_lex_reverse;
+		else
+			ctx->sort_ptr = &compare_lex_standard;
+	}
+	return (EXIT_SUCCESS);
 }
 
 int				main(

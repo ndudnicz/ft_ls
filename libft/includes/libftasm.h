@@ -24,9 +24,8 @@ int				ft_isascii(int c);
 int				ft_isprint(int c);
 int				ft_tolower(int c);
 int				ft_toupper(int c);
-char			*ft_strcat(char *restrict s1, char const *restrict s2);
-void			*ft_memcpy(void *restrict dst, const void *restrict src,
-								size_t n);
+char			*ft_strcat(char *s1, char const *s2);
+void			*ft_memcpy(void *dst, const void *src, size_t n);
 void			*ft_memset(void *b, int c, size_t len);
 char			*ft_strchr(const char *s, int c);
 int				ft_atoi(const char *s);

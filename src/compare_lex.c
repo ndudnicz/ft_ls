@@ -13,6 +13,7 @@
 #include "mystdint.h"
 #include "entry.h"
 #include "libftasm.h"
+#include "libft.h"
 
 /*
 ** Slow compare functions, need to be improved :)
@@ -23,7 +24,7 @@ t_s32	compare_lex_standard(
 	t_entry *b
 )
 {
-	return (ft_strcmp(a->name, b->name));
+	return (ft_strncmp(a->name, b->name, __DARWIN_MAXNAMLEN));
 }
 
 t_s32	compare_lex_reverse(
@@ -31,5 +32,5 @@ t_s32	compare_lex_reverse(
 	t_entry *b
 )
 {
-	return (ft_strcmp(b->name, a->name));
+	return (ft_strncmp(b->name, a->name, __DARWIN_MAXNAMLEN));
 }

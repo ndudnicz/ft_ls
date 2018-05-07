@@ -19,16 +19,15 @@ t_s32	args_compare_time_modified(
 	void *b
 )
 {
-	struct stat		lstat_a;
-	struct stat		lstat_b;
+	struct stat		stat[2];
 	t_s64			t;
 
-	lstat((char*)a, &lstat_a);
-	lstat((char*)b, &lstat_b);
-	if ((S_ISDIR(lstat_a.st_mode) && S_ISDIR(lstat_b.st_mode)) ||
-	(!S_ISDIR(lstat_a.st_mode) && !S_ISDIR(lstat_b.st_mode)))
+	lstat((char*)a, &stat[0]);
+	lstat((char*)b, &stat[1]);
+	if ((S_ISDIR(stat[0].st_mode) && S_ISDIR(stat[1].st_mode)) ||
+	(!S_ISDIR(stat[0].st_mode) && !S_ISDIR(stat[1].st_mode)))
 	{
-		t = lstat_b.st_mtimespec.tv_sec - lstat_a.st_mtimespec.tv_sec;
+		t = stat[1].st_mtimespec.tv_sec - stat[0].st_mtimespec.tv_sec;
 		if (t > 0)
 			return (1);
 		else if (t < 0)
@@ -36,7 +35,7 @@ t_s32	args_compare_time_modified(
 		else
 			return (args_compare_lex_standard(a, b));
 	}
-	else if (S_ISDIR(lstat_a.st_mode))
+	else if (S_ISDIR(stat[0].st_mode))
 		return (1);
 	else
 		return (-1);
@@ -47,16 +46,15 @@ t_s32	args_compare_time_modified_reverse(
 	void *b
 )
 {
-	struct stat		lstat_a;
-	struct stat		lstat_b;
+	struct stat		stat[2];
 	t_s64			t;
 
-	lstat((char*)a, &lstat_a);
-	lstat((char*)b, &lstat_b);
-	if ((S_ISDIR(lstat_a.st_mode) && S_ISDIR(lstat_b.st_mode)) ||
-	(!S_ISDIR(lstat_a.st_mode) && !S_ISDIR(lstat_b.st_mode)))
+	lstat((char*)a, &stat[0]);
+	lstat((char*)b, &stat[1]);
+	if ((S_ISDIR(stat[0].st_mode) && S_ISDIR(stat[1].st_mode)) ||
+	(!S_ISDIR(stat[0].st_mode) && !S_ISDIR(stat[1].st_mode)))
 	{
-		t = lstat_a.st_mtimespec.tv_sec - lstat_b.st_mtimespec.tv_sec;
+		t = stat[0].st_mtimespec.tv_sec - stat[1].st_mtimespec.tv_sec;
 		if (t > 0)
 			return (1);
 		else if (t < 0)
@@ -64,7 +62,7 @@ t_s32	args_compare_time_modified_reverse(
 		else
 			return (args_compare_lex_reverse(a, b));
 	}
-	else if (S_ISDIR(lstat_a.st_mode))
+	else if (S_ISDIR(stat[0].st_mode))
 		return (1);
 	else
 		return (-1);

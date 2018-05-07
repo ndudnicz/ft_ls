@@ -44,7 +44,7 @@ t_entry	*set_names(
 		return (NULL);
 	else
 	{
-		ft_memcpy((*new)->name, name, ft_strlen(name));
+		ft_memcpy((*new)->name, name, ft_strlen((char*)name));
 		return (*new);
 	}
 }
