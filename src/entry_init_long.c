@@ -67,18 +67,10 @@ static void		make_rights(t_entry *new)
 	get_right((new->lstat.st_mode & 0700) >> 6, new->entry_long->rights + 1);
 	if (new->lstat.st_mode & 01000)
 		new->entry_long->rights[9] = new->lstat.st_mode & 0001 ? 't' : 'T';
-	if ((((new->lstat.st_mode & 06000) >> 9) & 4) &&
-	new->entry_long->rights[3] == '-')
-		new->entry_long->rights[3] = 'S';
-	if ((((new->lstat.st_mode & 06000) >> 9) & 2) &&
-	new->entry_long->rights[6] == '-')
-		new->entry_long->rights[6] = 'S';
-	if ((((new->lstat.st_mode & 06000) >> 9) & 4) &&
-	new->entry_long->rights[3] == 'x')
-		new->entry_long->rights[3] = 's';
-	if ((((new->lstat.st_mode & 06000) >> 9) & 2) &&
-	new->entry_long->rights[6] == 'x')
-		new->entry_long->rights[6] = 's';
+	if (new->lstat.st_mode & 02000)
+		new->entry_long->rights[6] = new->lstat.st_mode & 0010 ? 's' : 'S';
+	if (new->lstat.st_mode & 04000)
+		new->entry_long->rights[3] = new->lstat.st_mode & 0100 ? 's' : 'S';
 }
 
 t_s32			set_date(

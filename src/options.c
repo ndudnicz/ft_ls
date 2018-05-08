@@ -50,7 +50,6 @@ void		del_null_params(
 }
 
 static int	switch_set_options(
-	char const *exec_name,
 	char const *arg,
 	t_context *ctx
 )
@@ -61,7 +60,7 @@ static int	switch_set_options(
 		arg++;
 	while (arg && *arg)
 	{
-		if (*arg && ft_strchr(PARAMS_STR, (int)(*arg)))
+		if (*arg && ft_strchr(PARAMS_STR, *arg))
 		{
 			if (*arg == OPT_LONG_FORMAT_CHAR)
 				ctx->options |= OPT_LONG_FORMAT;
@@ -75,7 +74,7 @@ static int	switch_set_options(
 				ctx->options |= OPT_SORT_TIME;
 		}
 		else
-			return (ft_error(exec_name, " ", UNKNOW_ARG, -1));
+			return (ft_error(ctx->exec_name, UNKNOW_ARG, arg, -1));
 		arg++;
 	}
 	return (0);
@@ -104,7 +103,7 @@ int			get_options(
 			n++;
 			break ;
 		}
-		if (switch_set_options(av[0], av[i], ctx) < 0)
+		if (switch_set_options(av[i], ctx) < 0)
 			return (1);
 		n++;
 		av[i++] = NULL;

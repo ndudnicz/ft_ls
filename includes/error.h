@@ -16,7 +16,7 @@
 # include "options.h"
 
 # define MALLOC_FAILED "malloc() failed."
-# define UNKNOW_ARG "Unknown argument."
+# define UNKNOW_ARG "illegal option"
 # define UNKNOWN_ERROR "Unknow error."
 
 int		ft_error(

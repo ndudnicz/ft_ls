@@ -22,7 +22,7 @@
 
 static t_s32	usage(t_s32 const ret)
 {
-	ft_puts("usage: ./ft_ls [-Rrlta] [file ...]");
+	ft_putstr_fd("usage: ./ft_ls [-Rrlta] [file ...]\n", 2);
 	return (ret);
 }
 
