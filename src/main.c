@@ -18,6 +18,7 @@
 #include "compare.h"
 #include "error.h"
 #include "run.h"
+#include "libft.h"
 
 static t_s32	usage(t_s32 const ret)
 {
@@ -53,13 +54,16 @@ int				main(
 	time_t		clock;
 
 	ft_memset((void*)&ctx, 0, sizeof(t_context));
+	if (!(ctx.exec_name = ft_strdup(av[0])))
+		return (EXIT_FAILURE);
+	av[0] = NULL;
 	if (get_options(&ctx, &ac, av))
 		return (usage(EXIT_FAILURE));
-	ctx.exec_name = av[0];
 	if (init_sort_ptr(&ctx) == EXIT_FAILURE)
 		return (EXIT_FAILURE);
 	if ((ctx.timestamp = time(&clock)) < 0)
 		return (EXIT_FAILURE);
-	run(&ctx, ac - 1, av + 1);
+	run(&ctx, ac - 1, av);
+	free(ctx.exec_name);
 	return (ctx.ret);
 }

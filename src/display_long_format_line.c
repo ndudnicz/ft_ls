@@ -122,7 +122,7 @@ int			format_line(
 		ft_strlen(entry->name) +
 		(entry->mode & MODE_IS_SYM ? 4 +
 		ft_strlen(entry->entry_long->sym_name) : 0))))
-		return (ft_error("", "format_line()", MALLOC_FAILED, 1));
+		return (ft_error(" ", "format_line()", MALLOC_FAILED, 1));
 	ft_strncpy(*line, entry->entry_long->rights, 10);
 	ft_strcat(*line, "  ");
 	put_space(*line, entry->data->entry_long->sizes.biggest_nlink_len -

@@ -20,7 +20,7 @@
 ** and doesn't exist anymore in argv.
 */
 
-static void	del_null_params(
+void		del_null_params(
 	int *ac,
 	char **av,
 	int offset
@@ -33,7 +33,7 @@ static void	del_null_params(
 	n = 1;
 	while (n < *ac)
 	{
-		i = 1;
+		i = 0;
 		while (i < *ac - 1)
 		{
 			if (av[i] == NULL)
@@ -75,7 +75,7 @@ static int	switch_set_options(
 				ctx->options |= OPT_SORT_TIME;
 		}
 		else
-			return (ft_error(exec_name, "", UNKNOW_ARG, -1));
+			return (ft_error(exec_name, " ", UNKNOW_ARG, -1));
 		arg++;
 	}
 	return (0);

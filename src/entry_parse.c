@@ -51,14 +51,16 @@ static t_entry		*make_root_norme(t_var_box *vb)
 
 	newpath = NULL;
 	new = NULL;
-	if (!(newpath = ft_strjoin_free(ft_strjoin(vb->path,
-	ft_strcmp("/", vb->path) ? "/" : ""),
+	if (!(newpath = ft_strjoin_free(ft_strjoin(vb->path, "/"),
 	vb->dp->d_name, 1, 0)))
 		return (pft_free_perror(vb->ctx, &new, vb->path, NULL));
 	stat(newpath, &s[0]);
 	lstat(newpath, &s[1]);
 	if (!(new = create_entry(vb->ctx, s, vb->dp->d_name, newpath)))
+	{
+		free((void*)newpath);
 		return (pft_free_perror(vb->ctx, &new, vb->path, NULL));
+	}
 	if (push_sort_entry(vb->begin, &new, vb->ctx->sort_ptr)
 	== NULL)
 		return (pft_free_perror(vb->ctx, &new, vb->path, NULL));

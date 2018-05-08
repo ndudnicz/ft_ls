@@ -32,6 +32,7 @@ free.c \
 args_compare_lex.c \
 args_compare_time.c \
 run.c \
+check_opendir.c \
 set_sizes.c
 
 OBJ = $(SRC:%.c=obj/%.o)

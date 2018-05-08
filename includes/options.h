@@ -52,4 +52,10 @@ int				get_options(
 	char **av
 );
 
+void			del_null_params(
+	int *ac,
+	char **av,
+	int offset
+);
+
 #endif

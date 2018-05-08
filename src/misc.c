@@ -39,7 +39,8 @@ t_entry	*set_names(
 )
 {
 	if (!new || !*new || !name || !fullname ||
-	!((*new)->fullname = ft_strdup(fullname)))
+	!((*new)->fullname = ft_strdup(fullname[0] == '/' && fullname[1] == '/' ?
+	fullname + 1 : fullname)))
 		return (NULL);
 	else
 	{
