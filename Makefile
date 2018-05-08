@@ -1,15 +1,12 @@
 NAME = ft_ls
-
 CC = gcc
-
-FLAGS = -Werror -Wextra -Wall -std=c89 -O2 -flto -g -fsanitize=address
-
+FLAGS = -Werror -Wextra -Wall -std=c89 -O2 -flto# -g -fsanitize=address
 PATH_SRC = src
-
 PATH_OBJ = obj
-
 PATH_INCLUDES = includes/
 LIB_INCLUDES = libft/includes/
+LIBFT.A = libft.a
+LIBFTASM.A = libftasm.a
 
 SRC =	\
 main.c \
@@ -52,7 +49,7 @@ clean:
 
 fclean: clean
 	make fclean -C libft
-	$(RM) $(NAME)
+	$(RM) $(NAME) $(LIBFT.A) $(LIBFTASM.A)
 
 re: fclean all
 
