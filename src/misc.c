@@ -31,8 +31,7 @@ void	*my_calloc(t_u64 const size)
 /*
 ** Dup names values in entry structure
 */
-#include <stdio.h>
-#include <string.h>
+
 t_entry	*set_names(
 	t_entry **new,
 	char const *const name,

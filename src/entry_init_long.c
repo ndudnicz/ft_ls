@@ -87,22 +87,30 @@ t_s32			set_date(
 	struct stat *s
 )
 {
-	char const *const	str = ctime(&(s->st_mtime));
+	char const			*str = ctime(&(s->st_mtime));
 	t_s64 const			diff = ctx->timestamp - s->st_mtime;
+	int					i;
 
+	i = 0;
 	if (!str)
 		return (ft_free_perror(ctx, new, NULL, 1));
 	else if (diff && (diff > TIME || (diff * -1) > TIME))
 	{
 		ft_memcpy((*new)->entry_long->date, str + 4, 7);
-		ft_memcpy((*new)->entry_long->date + 7, str + 19, 5);
-		return (0);
+		str += 19;
+		while (*str && !ft_isdigit(*str))
+			str++;
+		while (*str && ft_isdigit(*str))
+		{
+			i++;
+			str++;
+		}
+		str -= i + 1;
+		ft_memcpy((*new)->entry_long->date + 7, str, i + 1);
 	}
 	else
-	{
 		ft_memcpy((*new)->entry_long->date, str + 4, 12);
-		return (0);
-	}
+	return (0);
 }
 
 /*

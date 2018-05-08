@@ -41,7 +41,7 @@ typedef struct		s_entry_long
 {
 	char	sym_name[__DARWIN_MAXNAMLEN + 1];
 	t_sizes	sizes;
-	char	date[13];
+	char	date[14];
 	char	rights[11];
 	t_u64	total;
 	char	*username;
