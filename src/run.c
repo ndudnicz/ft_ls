@@ -19,6 +19,7 @@
 #include "options.h"
 #include "entry_parse.h"
 #include "entry_parse_long.h"
+#include "error.h"
 
 static void			sort_args(
 	t_context *ctx,
@@ -64,6 +65,20 @@ static t_entry		*switch_make_entries(
 	}
 }
 
+static int			check_opendir(char const *const path)
+{
+	DIR		*dirp;
+
+	dirp = NULL;
+	if ((dirp = opendir(path)) == NULL)
+		return (1);
+	else
+	{
+		closedir(dirp);
+		return (0);
+	}
+}
+
 void				run(
 	t_context *ctx,
 	int ac,
@@ -82,12 +97,14 @@ void				run(
 			lstat(av[i], &ls);
 			if (i > 0 && i < ac + 1 && S_ISDIR(ls.st_mode))
 				ft_putchar('\n');
-			if (ac > 1 && S_ISDIR(ls.st_mode))
+			if (ac > 1 && S_ISDIR(ls.st_mode) && !check_opendir(av[i]))
 			{
 				ft_putstr(av[i]);
 				ft_puts(":");
+				switch_make_entries(ctx, av[i]);
 			}
-			switch_make_entries(ctx, av[i]);
+			else
+				switch_make_entries(ctx, av[i]);
 			i++;
 		}
 	}
